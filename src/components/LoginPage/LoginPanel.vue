@@ -42,10 +42,10 @@
 
 <script>
 import {api} from "@/request";
-import { toRaw } from '@vue/reactivity'
+// import { toRaw } from '@vue/reactivity'
 import {useStore} from "vuex"
 import {ElMessage} from "element-plus";
-import {CookieManager} from "@/cookie";
+// import {CookieManager} from "@/cookie";
 
 export default {
   name: "LoginPanel",
@@ -61,11 +61,7 @@ export default {
   },
   methods: {
     tryLogin() {
-      // let data = new FormData()
-      // data.append("username", this.sid)
-      // data.append("password", this.password)
-
-      let data = toRaw({"username": this.sid, "password": this.password})
+      let data = {"userName": this.sid, "userPassword": this.password}
 
       api({
         url: "user/login",
@@ -74,40 +70,32 @@ export default {
       }).then(
           // Valid response
           (response) => {
-            console.log(response)
+            // Success login
+            console.log(response.data)
+            let user = response.data;  // TODO: if backend changes, modify this
             ElMessage.success({
-                message: '好耶',
-                // type: 'error'
-              })
-
-            // // Success login
-            // if (response.data['Code'] === '200') {
-            //   let user = response.data.User;  // TODO: if backend changes, modify this
-            //   ElMessage.success({
-            //     message: '欢迎回来，' + user.NickName,
-            //     type: 'success'
-            //   })
-            //   console.log(response.data.Token)
-            //   CookieManager.set("token", response.data.Token, 3600*1000)
-            //   this.store.commit("user/userLogin", user)
-            //   // this.$router.push("/")
-            // }
-            // // Wrong user id or password
-            // else {
-            //   ElMessage.error({
-            //     message: '用户名或密码错误',
-            //     type: 'error'
-            //   })
-            // }
+              message: '欢迎回来，' + user.userNickname,
+              type: 'success'
+            })
+            // CookieManager.set("token", response.data.Token, 3600*1000)
+            this.store.commit("user/userLogin", user)
+            this.$router.push("/")
           },
 
           // No response
           (error) => {
-            console.log(error)
-            ElMessage.error({
-              message: '服务器在开小差...',
+            if (error.response.status == 401){
+              ElMessage.error({
+              message: error.response.data,
               type: 'error'
-            })
+              })
+            }
+            else{
+              ElMessage.error({
+                message: '服务器在开小差...',
+                type: 'error'
+              })
+            }
           })
     }
   },
@@ -121,41 +109,39 @@ export default {
   },
   mounted() {
     console.log("in login panel, next: ", this.next)
-    let token = CookieManager.get("token")
-    if (token) {
-      let formData = new FormData()
-      formData.append('token', token)
-      api({
-        method: "POST",
-        data: formData,
-        url: "user/autoLogin"
-      }).then((response) => {
-        if (response.data["Code"] === "200") {
-          let user = response.data.User  // TODO: if changes
-          this.store.commit("user/userLogin", user)
-          ElMessage.success({
-            message: '欢迎回来，' + user.NickName,
-            type: 'success'
-          })
-          if (this.next) {
-            this.$router.push(this.next)
-          } else {
-            this.$router.push("/")
-          }
-        } else {
-          ElMessage.warning({
-            message: "登陆过期，请重新登陆",
-            type: 'success'
-          })
-        }
-      }, (error) => {
-        console.log(error)
+    api({
+      method: "POST",
+      data: {},
+      url: "user/login"
+    }).then((response) => {
+      let user = response.data  // TODO: if changes
+      this.store.commit("user/userLogin", user)
+      ElMessage.success({
+        message: '欢迎回来，' + user.NickName,
+        type: 'success'
+      })
+      if (this.next) {
+        this.$router.push(this.next)
+      } else {
+        this.$router.push("/")
+      }
+
+    }, (error) => {
+      console.log(error)
+      if (error.response.status == 401){
+        ElMessage.error({
+        message: "登陆过期，请重新登陆",
+        type: 'error'
+        })
+      }
+      else{
         ElMessage.error({
           message: '服务器在开小差...',
           type: 'error'
         })
-      })
-    }
+      }
+    })
+
   }
 }
 </script>

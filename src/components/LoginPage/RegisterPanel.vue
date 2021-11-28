@@ -76,7 +76,7 @@
         <i class="el-icon-error text-red-500 pl-2" v-if="!ok.phone"></i>
       </div>
 
-        <button type="submit" @click="getCode" 
+        <button type="submit" @click.prevent="getCode" 
             class="h-12 bg-gradient-to-r from-blue-400 to-green-300 hover:from-green-200 hover:to-blue-300" > 验证码
         </button>
 
@@ -91,7 +91,7 @@
     <div class="center"> 
       <p class="text-red-500" v-text="tips"></p>
     </div>
-    <button type="submit" v-if="showLast.button"  @click="submitRegister"
+    <button type="submit" v-if="showLast.button"  @click.prevent="submitRegister"
             class="h-12 bg-gradient-to-r from-blue-400 to-green-300 hover:from-green-200 hover:to-blue-300" > 注册
     </button>
 
@@ -101,7 +101,6 @@
 
 <script>
 
-import { toRaw } from '@vue/reactivity'
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";
@@ -162,7 +161,7 @@ export default {
           })
           return
       }
-      let data = toRaw({"userPhone": this.form.userPhone})
+      let data = {"userPhone": this.form.userPhone}
       console.log(data)
         api({
           method: "POST",
@@ -189,11 +188,10 @@ export default {
       console.log(this.form)
       if (this.ableToSubmit) {
         console.log("youre able to submit")
-        let data = toRaw(this.form)
         api({
           method: "POST",
           url: "user/register",
-          data: data,
+          data: this.form,
         }).then((response) => {
           console.log(response)
           if (response.status == 200) {
@@ -204,7 +202,7 @@ export default {
           } 
         }, (error) => {
           console.log(error.response.status)
-          if(error.response.status == 422) {
+          if(error.response.status == 401) {
             ElMessage.error({
               message: "验证码错误！",
             })
@@ -232,7 +230,7 @@ export default {
         this.tips = "Make sure it's  at least 4 characters including a number and a letter."
       }
       else{
-        let data = toRaw({"userName": this.form.userName})
+        let data = {"userName": this.form.userName}
         console.log(data)
         api({
           method: "POST",
@@ -248,7 +246,7 @@ export default {
           }
         }, (error) => {
           console.log(error.response.status)
-          if(error.response.status == 422) {
+          if(error.response.status == 401) {
             this.tips = error.response.data
           }
           else{
@@ -258,9 +256,7 @@ export default {
           }
           
         })
-
       }
-      
     },
 
     nickChange() {
@@ -310,7 +306,7 @@ export default {
         this.tips = "Make sure it's 11 numbers ."
       }
       else{
-        let data = toRaw({"userPhone": this.form.userPhone})
+        let data = {"userPhone": this.form.userPhone}
         console.log(data)
         api({
           method: "POST",
@@ -326,7 +322,7 @@ export default {
           }
         }, (error) => {
           console.log(error.response.status)
-          if(error.response.status == 422) {
+          if(error.response.status == 401) {
             this.tips = error.response.data
           }
           else{
@@ -335,9 +331,7 @@ export default {
             })
           }
         })
-
       }
-
     },
 
     isPhoneLegal(phone) {

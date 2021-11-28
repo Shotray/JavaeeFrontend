@@ -79,7 +79,7 @@
 <script>
 import {useStore} from 'vuex'
 import {CookieManager} from "@/cookie";
-import {api} from "@/request";
+// import {api} from "@/request";
 
 export default {
   name: "Header",
@@ -108,31 +108,31 @@ export default {
       this.$router.push("/")
     }
   },
-  mounted() {
-    if (!this.user.loggedIn) {
-      let token = CookieManager.get("token")
-      let formData = new FormData()
-      formData.append("token", token)
-      api({
-        method: "POST",
-        url: "user/autoLogin",
-        data: formData
-      }).then(response => {
-        if (response.data.Code === '200') {
-          let user = response.data.User
-          this.store.commit("user/userLogin", user)
-          console.log("in header store values", this.store.getters['user/userInfo'])
-        } else {
-          console.log("Header fail with response", response)
-          console.log("in header store values", this.store.getters['user/userInfo'])
-        }
-      }, error => {
-        console.log("header fail with error", error)
-      })
-    } else {
-      console.log("in header store values", this.store.getters['user/userInfo'])
-    }
-  },
+  // mounted() {
+  //   if (!this.user.loggedIn) {
+  //     let token = CookieManager.get("token")
+  //     let formData = new FormData()
+  //     formData.append("token", token)
+  //     api({
+  //       method: "POST",
+  //       url: "user/autoLogin",
+  //       data: formData
+  //     }).then(response => {
+  //       if (response.data.Code === '200') {
+  //         let user = response.data.User
+  //         this.store.commit("user/userLogin", user)
+  //         console.log("in header store values", this.store.getters['user/userInfo'])
+  //       } else {
+  //         console.log("Header fail with response", response)
+  //         console.log("in header store values", this.store.getters['user/userInfo'])
+  //       }
+  //     }, error => {
+  //       console.log("header fail with error", error)
+  //     })
+  //   } else {
+  //     console.log("in header store values", this.store.getters['user/userInfo'])
+  //   }
+  // },
 }
 
 
