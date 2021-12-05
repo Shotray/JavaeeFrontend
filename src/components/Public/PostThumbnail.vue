@@ -44,11 +44,12 @@ export default {
     }
   },
   mounted() {
-    this.id = this.post.PostId;
-    this.title = this.post.Title;
-    this.intro = this.post.Content;
-    this.user = this.post.Name;
-    this.avatar = "https://139.196.20.137:5001/"+this.post.AvatarPath;
+    this.id = this.post.postId;
+    this.title = this.post.postTitle;
+    this.intro = this.post.postIntroduction;
+    this.user = this.post.userNickname;
+    // this.avatar = "https://139.196.20.137:5001/"+this.post.AvatarPath;
+    this.avatar = this.post.userImage;
   }
 }
 </script>

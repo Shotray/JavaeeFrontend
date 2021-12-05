@@ -20,9 +20,9 @@
       <div class="py-6 rounded-bl-2xl rounded-br-2xl w-3/4 bg-gradient-to-r from-blue-200 to-blue-400 bg-opacity-100 grid grid-cols-1 justify-items-center border-4">
         <div>
           <PostThumbnail
-              v-for="item in postList"
+             v-for="item in postList"
               :key="item"
-              :post="item">
+              :post="item" >
           </PostThumbnail>
           <center>
             <el-pagination @size-change="pageSizeChange" @current-change="currentPageChange" layout="prev,pager,next" :current-page="currentPage" :page-size="pageSize" :total="totalPage"></el-pagination>
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 2,
       postList: undefined,
       totalPage: undefined,
     }
@@ -61,7 +61,7 @@ export default {
       this.currentPage = val;
 
       api({
-        url: "post",
+        url: "post/posts",
         method: "GET",
         params: {
           "maxNumber": this.pageSize,
@@ -69,10 +69,12 @@ export default {
         },
       }).then(
           (response) => {
+            console.log("first-------------------")
             console.log(response);
 
-            if(response.data["Code"] === "200") {
-              this.postList = response.data["PostList"];
+            if(response.status === 200) {
+              console.log("chenggong-------------------------");
+              this.postList = response.data;
             }
           },
 
@@ -94,8 +96,8 @@ export default {
         (response) => {
           console.log(response);
 
-          if(response.data["Code"] === "200") {
-            this.totalPage = response.data["PostNumber"];
+          if(response.status === 200) {
+            this.totalPage = response.data;
           }
         },
     )
