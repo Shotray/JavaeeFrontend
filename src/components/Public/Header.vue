@@ -48,6 +48,10 @@
         active-text-color="#5dbe8a"
         :router="true"
     >
+      <el-menu-item class="inputSearch">
+        <input type="text" placeholder="请输入您要搜索的内容..." />
+        <router-link :to="'/commoditySearch?key=' + input"><el-button class="circleButton" size="small" type="info" icon="el-icon-search" circle></el-button></router-link>
+      </el-menu-item>
       <el-menu-item index="/publishCommodity"><i class="el-icon-upload"></i>发布新商品</el-menu-item>
       <el-menu-item index="/notification"><i class="el-icon-message-solid"></i>消息</el-menu-item>
       <el-menu-item index="/shoppingCart"><i class="el-icon-shopping-cart-2"></i> 购物车</el-menu-item>
@@ -145,5 +149,27 @@ export default {
 
 .mercury {
   color: white;
+}
+
+.inputSearch input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 42px;
+  padding-left: 13px;
+}
+
+.inputSearch input {
+  width: 250px;
+  border-radius: 42px;
+  border: 2px solid #324b4e;
+  transition: 0.3s linear;
+}
+.inputSearch input:focus {
+  width: 300px;
+}
+.circleButton {
+  width: 42px;
+  background-color: unset;
 }
 </style>
