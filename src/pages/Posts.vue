@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-main class="flex bg-repeat" style="background-image: url('https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg')">
+    <el-main class="flex bg-repeat">
       <center>
       <div class="rounded-tl-2xl rounded-tr-2xl w-3/4 border-4 bg-blue-100 divide-y-4 divide-gray-400 divide-dashed">
         <div class="bg-no-repeat bg-center bg-cover rounded-tl-xl rounded-tr-xl h-60 pt-12" style="background-image: url('https://img.tukuppt.com/bg_grid/00/03/29/4oXYBULioJ.jpg')">
@@ -106,5 +106,10 @@ export default {
 </script>
 
 <style scoped>
-
+  .bg-repeat{
+     background-image:url('https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg');
+                background-repeat:no-repeat;
+                background-size:100% 100%;
+                -moz-background-size:100% 100%;
+  }
 </style>

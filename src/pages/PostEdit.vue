@@ -61,6 +61,7 @@ export default {
   methods: {
     onSubmit() {
       if(this.ifTitle && this.ifContent) {
+        // console.log("--------------");
         this.$refs.upload.submit();
 
         let id = this.store.getters['user/userInfo'].id;

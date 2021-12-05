@@ -82,7 +82,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(#5698c3, #d1c2d3);
+  background-image: linear-gradient(#3a353f, #505668);
   overflow-y: scroll;
 }
 

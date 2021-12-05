@@ -2,8 +2,8 @@ import {createRouter, createWebHashHistory} from "vue-router";
 // import {CookieManager} from "@/cookie";
 // import {api} from "@/request";
 
-// const Home = () =>
-//     import ("../pages/Home")
+const Home = () =>
+    import ("../pages/Home")
 const CommoditySearch = () =>
     import ("../pages/CommoditySearch")
 const CommodityDetail = () =>
@@ -97,7 +97,7 @@ const routes = [
     {
         path: "/",
         name: "HomePage",
-        // component: Home
+        component: Home
     },
     {
         path: "/me",
