@@ -231,6 +231,8 @@ export default {
       }
       else{
         let data = {"userName": this.form.userName}
+        // let data = new FormData()
+        // data.append("userName", this.form.userName)
         console.log(data)
         api({
           method: "POST",

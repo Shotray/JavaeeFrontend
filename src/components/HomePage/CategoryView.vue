@@ -52,7 +52,7 @@
 import CommodityThumbnail from "@/components/Public/CommodityThumbnail";
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
-import {staticData} from "@/assets/js/static";
+// import {staticData} from "@/assets/js/static";
 
 export default {
   name: "CategoryView",
@@ -85,29 +85,29 @@ export default {
       })
     }
   },
-  mounted() {
-    // let defaultCat = this.categories[this.defaultActive][1]
-    api({
-      method: "GET",
-      url: "commodity/?classification=1",
-    }).then( (response) => {
-      console.log(response)
-      if (response.data.Code === "200") {
-        this.commodities = response.data["commodityList"]
-      }
-    }, (error) => {
-      ElMessage.error({
-        message: "服务器似乎在开小差..."
-      })
-      console.log(error)
-    })
-  },
-  setup() {
-    let categories = staticData.categories
-    return {
-      categories
-    }
-  }
+//   mounted() {
+//     // let defaultCat = this.categories[this.defaultActive][1]
+//   //   api({
+//   //     method: "GET",
+//   //     url: "commodity/?classification=1",
+//   //   }).then( (response) => {
+//   //     console.log(response)
+//   //     if (response.data.Code === "200") {
+//   //       this.commodities = response.data["commodityList"]
+//   //     }
+//   //   }, (error) => {
+//   //     ElMessage.error({
+//   //       message: "服务器似乎在开小差..."
+//   //     })
+//   //     console.log(error)
+//   //   })
+//   // },
+//   // setup() {
+//   //   let categories = staticData.categories
+//   //   return {
+//   //     categories
+//   //   }
+//   // }
 }
 </script>
 

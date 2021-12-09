@@ -4,27 +4,7 @@
       <el-form-item label="商品名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="是否出租" prop="forRent">
-        <el-switch
-            style="display: block"
-            v-model="ruleForm.forRent"
-            inactive-color="#5698c3"
-            active-color="#8b2671"
-            inactive-text="售卖"
-            active-text="出租"
-            @change="forRentChange"
-        >
-        </el-switch>
-      </el-form-item>
-      <el-form-item label="物品状态" prop="status">
-        <el-select v-model="ruleForm.status" placeholder="请选择物品状态">
-          <el-option label="99新" value="99新"></el-option>
-          <el-option label="9成新" value="9成新"></el-option>
-          <el-option label="7成新" value="7成新"></el-option>
-          <el-option label="5成新" value="5成新"></el-option>
-          <el-option label="能用" value="能用"></el-option>
-        </el-select>
-      </el-form-item>
+
 
       <el-form-item label="分类" prop="category">
         <el-select v-model="ruleForm.category" placeholder="请选择物品分类">
@@ -68,33 +48,12 @@
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
       </el-form-item>
 
-      <el-form-item label="添加标签">
-        <el-tag
-            :key="tag"
-            v-for="tag in dynamicTags"
-            closable
-            :disable-transitions="false"
-            @close="handleClose(tag)">
-          {{tag}}
-        </el-tag>
-        <el-input
-            class="input-new-tag"
-            v-if="inputVisible"
-            v-model="inputValue"
-            ref="saveTagInput"
-            size="small"
-            @keyup.enter="handleInputConfirm"
-            @blur="handleInputConfirm"
-        >
-        </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 新增标签</el-button>
-      </el-form-item>
-
       <el-form-item label="商品图片" prop="images">
         <el-upload
+            uid: file.uid
             list-type="picture-card"
             :auto-upload="false"
-            v-model="photoList"
+            :file-list="photoList"
             accept=".jpg,.jpeg,.png"
             :on-remove="handleRemove"
             :on-change="handleChange"
@@ -150,7 +109,6 @@ export default {
     return {
       ruleForm: {
         name: '',
-        status: '',
         category: '',
         forRent: false,
         price: 9.9,
@@ -164,9 +122,6 @@ export default {
         name: [
           {required: true, message: '请输入商品名', trigger: 'blur'},
           {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
-        ],
-        status: [
-          {required: true, message: '请选择状态', trigger: 'blur'}
         ],
         category: [
           {required: true, message: '请选择分类', trigger: 'blur'}
@@ -188,8 +143,6 @@ export default {
         ]
       },
       photoList: [],
-
-
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
@@ -201,40 +154,48 @@ export default {
   },
   methods: {
     submitForm(formName) {
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let id = this.store.getters['user/userInfo'].id
-
-          let formData = new FormData()
-          formData.append("Name", this.ruleForm.name)
-          formData.append("OwnerId", id)
-          formData.append("Condition", this.ruleForm.status)
-          formData.append("Price", this.ruleForm.price)
-          formData.append("Stock", this.ruleForm.stock)
-          formData.append("ForRent", this.ruleForm.forRent)
-          formData.append("Unit", this.ruleForm.unit)
-          formData.append("Description", this.ruleForm.desc)
+          let formData = new FormData();
+          // formData.append("goods_category", this.ruleForm.category)
+          // formData.append("goods_name", this.ruleForm.name)
+          // formData.append("goods_price", this.ruleForm.price)
+          // formData.append("sell_num", this.ruleForm.stock)
+          // formData.append("sell_status", 1)
+          // formData.append("goods_introduction", this.ruleForm.desc)
+          // formData.append("goods_favorite", 0)
+          // formData.append("goods_unit", this.ruleForm.category)
+          let data = {
+              "goodsCategory": this.ruleForm.category,
+              "goodsName": this.ruleForm.name,
+              "goodsPrice": this.ruleForm.price,
+              "sellNum": this.ruleForm.stock,
+              "sellStatus": 1,
+              "goodsIntroduction": this.ruleForm.desc,
+              "goodsFavorite": 0,
+              "goodsUnit": this.ruleForm.unit
+            }
+          formData.append("formData", new Blob([JSON.stringify(data)], {type: "application/json"}));
           for (let i = 0; i < this.photoList.length; i++) {
             console.log("file", this.photoList[i])
-            formData.append("Files", this.photoList[i].raw)
-          }
-          formData.append("Classification", this.ruleForm.category)
-          for (let i = 0; i < this.dynamicTags.length; i++) {
-            console.log(this.dynamicTags[i])
-            formData.append("Tags", this.dynamicTags[i])
+            formData.append("files", this.photoList[i].raw)
           }
 
           api({
             method: "post",
             data: formData,
-            url: 'commodity'
+            url: '/goods/publish',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
           }).then(response => {
-            console.log(response)
-            if (response.data.Code === '201') {
+            console.log(response.data)
+            if (response.status == 200) {
               ElMessage.success({
                 message: "上传成功"
               })
-              this.$router.push('/me')
+              // this.$router.push('/me')
             } else {
               ElMessage.error({
                 message: "上传失败，请检查数据"
@@ -242,9 +203,6 @@ export default {
             }
           }, error => {
             console.log(error)
-            ElMessage.error({
-              message: "服务器错误..."
-            })
           })
         } else {
           console.log('error submit!!');
@@ -294,6 +252,12 @@ export default {
 
     handleRemove(file) {
       console.log(file)
+      for(var i = 0; i < this.photoList.length; i++){
+        if(file.uid == this.photoList[i].uid){
+          console.log(this.photoList[i].uid)
+            this.photoList.splice(i,1)
+        }
+      }
     },
 
     handleChange(file, list) {
