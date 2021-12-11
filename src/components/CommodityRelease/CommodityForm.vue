@@ -195,7 +195,7 @@ export default {
               ElMessage.success({
                 message: "上传成功"
               })
-              // this.$router.push('/me')
+              this.$router.push('/me')
             } else {
               ElMessage.error({
                 message: "上传失败，请检查数据"
