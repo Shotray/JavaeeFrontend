@@ -88,58 +88,48 @@ export default {
       tableData: [],
     };
   },
-  // mounted() {
-  //   this.$nextTick(() => {
-  //     let user = this.store.getters['user/userInfo']
-  //     let userId = user.id
-  //     console.log("shoppingCart/" + userId.replaceAll('"', ''))
-  //     const that = this
-  //     api({
-  //       url: "shoppingCart/" + userId.replaceAll('"', ''),
-  //       method: "get",
-  //     })
-  //         .then(function (response) {
-  //           console.log(JSON.stringify(response.data));
-  //           that.tableData = []
-  //           for (let i = 0; i < response.data['ItemList'].length; i++) {
-  //             let temp = {}
-  //             console.log('count', response.data['ItemList'][i]['Count'])
-  //             temp['count'] = Number(response.data['ItemList'][i]['Count'])
-  //             temp['price'] = Number(response.data['PriceList'][i])
-  //             temp['commodity'] = response.data['NameList'][i]
-  //             temp['id'] = response.data['ItemList'][i]['CommodityId']
-  //             temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
-  //             that.tableData.push(temp)
-  //           }
-  //         })
-  //         .catch(function (error) {
-  //           console.log(error);
-  //           ElMessage.error({
-  //             message: '服务器在开小差...',
-  //             type: 'error'
-  //           })
-  //         });
-  //   })
-  // },
+  mounted() {
+    this.$nextTick(() => {
+      const that = this
+      api({
+        url: "shoppingCart",
+        method: "get",
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data[0]['image']));
+            that.tableData = []
+            for (let i = 0; i < response.data.length; i++) {
+              let temp = {}
+              temp['count'] = Number(response.data[i]['count'])
+              temp['price'] = Number(response.data[i]['goodsPrice'])
+              temp['commodity'] = response.data[i]['goodsName']
+              temp['id'] = response.data[i]['goodsId']
+              temp['image'] = response.data[i]['image']
+              that.tableData.push(temp)
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
+    })
+  },
   methods: {
     deleteRow(index, rows) {
-      let commodityId = rows[index]['id']
-      let user = this.store.getters['user/userInfo']
-      let userId = user.id
-
-      var FormData = require('form-data');
-      var data = new FormData();
-      data.append('commodityId', commodityId);
-      data.append('userId', userId);
-
+      let goodsId = rows[index]['id']
+      let data = {"goodsId": goodsId}
+      console.log(data)
       api({
         url: "shoppingCart",
         method: "delete",
-        data: data
+        params: data,
       })
           .then(function (response) {
             console.log(JSON.stringify(response.data));
-            if (String(response.data['Code']) === '200') {
+            if (response.status == 200) {
               rows.splice(index, 1);
               ElMessage.success({
                 message: '删除成功',
@@ -181,28 +171,28 @@ export default {
     },
   },
 
-  mounted() {
-    let id = this.store.getters['user/userInfo'].id
-    api({
-      method: "get",
-      url: "ShoppingCart/"+id,
-    }).then( response => {
-      if (response.data.Code === '200') {
-        for (let i = 0; i < response.data['ItemList'].length; i++) {
-          let temp = {}
-          console.log('count', response.data['ItemList'][i]['Count'])
-          temp['count'] = Number(response.data['ItemList'][i]['Count'])
-          temp['price'] = Number(response.data['PriceList'][i])
-          temp['commodity'] = response.data['NameList'][i]
-          temp['id'] = response.data['ItemList'][i]['CommodityId']
-          temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
-          this.tableData.push(temp)
-        }
-      } else {
-        ElMessage.error("服务器在开小差...")
-      }
-    })
-  },
+  // mounted() {
+  //   let id = this.store.getters['user/userInfo'].id
+  //   api({
+  //     method: "get",
+  //     url: "ShoppingCart/"+id,
+  //   }).then( response => {
+  //     if (response.data.Code === '200') {
+  //       for (let i = 0; i < response.data['ItemList'].length; i++) {
+  //         let temp = {}
+  //         console.log('count', response.data['ItemList'][i]['Count'])
+  //         temp['count'] = Number(response.data['ItemList'][i]['Count'])
+  //         temp['price'] = Number(response.data['PriceList'][i])
+  //         temp['commodity'] = response.data['NameList'][i]
+  //         temp['id'] = response.data['ItemList'][i]['CommodityId']
+  //         temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
+  //         this.tableData.push(temp)
+  //       }
+  //     } else {
+  //       ElMessage.error("服务器在开小差...")
+  //     }
+  //   })
+  // },
 
   setup() {
     let store = useStore()
