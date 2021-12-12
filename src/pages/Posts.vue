@@ -65,15 +65,13 @@ export default {
         method: "GET",
         params: {
           "maxNumber": this.pageSize,
-          "pageNumber": this.currentPage,
+          "pageNumber": this.currentPage - 1,
         },
       }).then(
           (response) => {
-            console.log("first-------------------")
             console.log(response);
 
             if(response.status === 200) {
-              console.log("chenggong-------------------------");
               this.postList = response.data;
             }
           },

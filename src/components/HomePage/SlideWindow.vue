@@ -1,9 +1,14 @@
 <template>
-  <el-carousel :interval="4000" type="card">
-    <el-carousel-item v-for="item in urls" :key="item">
-      <img class="window-img" :src="item">
-    </el-carousel-item>
-  </el-carousel>
+    <div class="block">
+    <el-carousel trigger="click">
+      <el-carousel-item v-for="item in urls" :key="item">
+        <div class="imgdiv">
+          <img class="window-img" :src="item">
+        </div>
+      </el-carousel-item>
+    </el-carousel>
+  </div>
+  
 </template>
 
 <script>
@@ -22,10 +27,12 @@ export default {
 </script>
 
 <style scoped>
+
 .el-carousel {
   text-align: center;
   align-content: center;
-  height: 100%;
+  height: 50%;
+
 }
 
 .window {
@@ -34,9 +41,16 @@ export default {
   justify-content: center;
 }
 
+.imgdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .window-img {
   position: relative;
-  width: 100%;
+  /* width: 100%; */
+
   max-width: 100%;
   max-height: 100%;
 }

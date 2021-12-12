@@ -1,8 +1,8 @@
 <template>
   <el-container>
-    <el-main class="bg-no-repeat bg-cover" style="background-image: url('https://img.tukuppt.com/bg_grid/00/19/83/O93nS0cqmF.jpg')">
+    <el-main class="bg-no-repeat bg-cover" style="background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg')">
       <center>
-      <el-form ref="form" :model="form" label-width="80px" class="bg-white w-3/5 border-4 rounded-xl border-opacity-100 pt-6 pr-6">
+      <el-form ref="form" :model="form" label-width="80px" class="bg-gray-100 w-3/5 border-4 rounded-xl border-opacity-100 pt-6 pr-6">
         <el-form-item label="标题">
           <el-input v-model="form.name" placeholder="请输入标题" maxlength="30" show-word-limit @input="titleChange"></el-input>
         </el-form-item>

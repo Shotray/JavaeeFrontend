@@ -1,18 +1,6 @@
 <template>
   <el-main>
     <div class="flex pb-5 m-auto self-end float-right">
-      <div class="search bar7">
-        <form>
-          <input type="text" placeholder="请输入您要搜索的内容..." />
-          <!-- <i class="el-icon-search"></i> -->
-          <router-link :to="'/commoditySearch?key=' + input"><el-button class="circleButton" size="large" type="primary" icon="el-icon-search" circle></el-button></router-link>
-          <!-- <button type="submit"></button> -->
-        </form>
-      </div>
-
-      <!-- <input v-model="input" placeholder="请输入要搜索的宝贝" class="rounded-md w-96 border-solid border-2 "/>
-      <div>&nbsp;&nbsp;</div>
-      <router-link :to="'/commoditySearch?key=' + input"><el-button size="medium" type="primary">搜索</el-button></router-link> -->
     </div>
     <div class="h-16"></div>
     <div class="flex">

@@ -1,10 +1,12 @@
 <template>
+  <el-main class="bg-repeat">
   <div>
     <el-row class="p-14">
-      <el-col :span="5" :offset="1">
+      <el-col :span="5" :offset="4">
         <el-card :body-style="{ padding: '35px' }">
           <div class="demo-basic--circle">
-            <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar">
+            <!-- <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar"> -->
+            <img src="https://img0.baidu.com/it/u=4114387071,3424465155&fm=26&fmt=auto" alt="">
           </div>
         </el-card>
       </el-col>
@@ -41,6 +43,7 @@
     </el-row>
     <MyCommodityAndPost :isMe=false :id=id></MyCommodityAndPost>
   </div>
+  </el-main>
 </template>
 
 <script>
@@ -126,4 +129,11 @@ export default {
   position: relative;
   border-radius: 50%;
 }
+
+.bg-repeat{
+     background-image:url('https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg');
+                background-repeat:no-repeat;
+                background-size:100% 100%;
+                -moz-background-size:100% 100%;
+  }
 </style>
