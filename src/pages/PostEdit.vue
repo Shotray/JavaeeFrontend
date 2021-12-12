@@ -64,37 +64,36 @@ export default {
         // console.log("--------------");
         this.$refs.upload.submit();
 
-        let id = this.store.getters['user/userInfo'].id;
-
-        let data = new FormData();
-
-        data.append("senderId",id);
-        data.append("title",this.form.name);
-        data.append("content",this.form.desc);
-        data.append("price",this.form.price);
-
-        for(let i = 0;i < this.file.length;i++) {
-          data.append("photos",this.file[i]);
+        let formData = new FormData();
+        let data={
+          "postTitle":this.form.name,
+          "postIntroduction":this.form.desc,
+          "postPrice":this.form.price          
         }
 
-        data.forEach((value, key) => {
-          console.log(`key ${key}: value ${value}`);
-        })
+        formData.append("formData", new Blob([JSON.stringify(data)], {type: "application/json"}));
+        for(let i = 0;i < this.file.length;i++) {
+          formData.append("files",this.file[i]);
+          console.log(this.file[i]);
+        }
 
         api({
-          url: "post",
+          url: "post/postEdit",
           method: "POST",
-          data: data,
+          data: formData,
+          headers: {
+                'Content-Type': 'multipart/form-data'
+            },
         }).then(
             (response) => {
               console.log(response);
 
-              if (response.data['Code'] === '201') {
+              if (response.status === 200) {
                 ElMessage.success({
                   message: "创建成功",
                   type: "success",
                 })
-                this.$router.push("/postDetail/"+response.data['PostId']);
+                this.$router.push("/postDetail/"+response.data['postId']);
               }
               else{
                 ElMessage.error({
