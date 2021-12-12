@@ -45,12 +45,12 @@
           <el-table
           :data="posts">
             <el-table-column
-                prop="Title"
+                prop="postTitle"
                 label="标题"
                 class="w-1/4">
             </el-table-column>
             <el-table-column
-                prop="Content"
+                prop="postIntroduction"
                 label="内容"
                 class="w-2/4">
             </el-table-column>
@@ -170,11 +170,11 @@ export default {
         (response) => {
           console.log(response);
 
-          if(response.data["Code"] === "200") {
-            this.postNumber = response.data["PostNumber"];
+          if(response.status === 200) {
+            this.postNumber = response.data;
 
             api({
-              url: "post",
+              url: "me/posts",
               method: "GET",
               params: {
                 userId: this.id,
@@ -184,8 +184,8 @@ export default {
                 (response) => {
                   console.log(response);
 
-                  if(response.data["Code"] === "200") {
-                    this.posts = response.data["PostList"];
+                  if(response.status === 200) {
+                    this.posts = response.data;
                   }
                 },
 
