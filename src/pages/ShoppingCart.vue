@@ -164,6 +164,7 @@ export default {
           for (let i = 0; i < this.tableData.length; i++) {
             sums[index] += Number(data[i]["price"]) * Number(data[i]["count"])
           }
+          sums[index] = sums[index].toFixed(2)
           sums[index] += ' 元';
         }
       });

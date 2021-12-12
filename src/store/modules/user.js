@@ -22,11 +22,10 @@ const getters = {
 const mutations = {
     userLogin(state, user) {
         state.loggedIn = true
-        state.id = user.Id
-        state.nickname = user.NickName
-        state.avatarPath = user.AvatarPath
-        state.realName = user.RealName
-        state.role = user.Role
+        state.id = user.userId
+        state.nickname = user.userNickname
+        state.avatarPath = user.userImage
+        state.realName = user.userName
         console.log("in mutation", state)
     },
 

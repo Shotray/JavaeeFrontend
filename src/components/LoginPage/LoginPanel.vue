@@ -77,7 +77,6 @@ export default {
               message: '欢迎回来，' + user.userNickname,
               type: 'success'
             })
-            // CookieManager.set("token", response.data.Token, 3600*1000)
             this.store.commit("user/userLogin", user)
             this.$router.push("/")
           },
@@ -112,7 +111,7 @@ export default {
     api({
       method: "POST",
       data: {},
-      url: "user/login"
+      url: "user/autoLogin"
     }).then((response) => {
       let user = response.data  // TODO: if changes
       this.store.commit("user/userLogin", user)
@@ -125,23 +124,7 @@ export default {
       } else {
         this.$router.push("/")
       }
-
-    }, (error) => {
-      console.log(error)
-      if (error.response.status == 401){
-        ElMessage.error({
-        message: "登陆过期，请重新登陆",
-        type: 'error'
-        })
-      }
-      else{
-        ElMessage.error({
-          message: '服务器在开小差...',
-          type: 'error'
-        })
-      }
     })
-
   }
 }
 </script>

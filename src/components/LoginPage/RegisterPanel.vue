@@ -198,7 +198,7 @@ export default {
             ElMessage.success({
               message: "注册成功！"
             })
-            // this.$router.push("/")
+            this.$router.push("/")
           } 
         }, (error) => {
           console.log(error.response.status)

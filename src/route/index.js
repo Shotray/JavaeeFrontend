@@ -1,6 +1,6 @@
 import {createRouter, createWebHashHistory} from "vue-router";
 // import {CookieManager} from "@/cookie";
-// import {api} from "@/request";
+import {api} from "@/request";
 
 const Home = () =>
     import ("../pages/Home")
@@ -45,35 +45,26 @@ const ShoppingCart = () =>
     import ("../pages/ShoppingCart")
 
 
-// function loginGuard(to, from, next) {
-//     console.log("from", from, "to", to)
-//     let token = CookieManager.get("token")
-//     console.log(token)
-//     let formData = new FormData()
-//     formData.append("token", token)
-//     if (token) {
-//         api({
-//             method: "POST",
-//             url: "user/autoLogin",
-//             data: formData
-//         }).then((response) => {
-//             console.log("autoLogin", response)
-//             if (response.data['Code'] === '200') {
-//                 next()
-//             } else {
-//                 if (from.fullPath === '/login') {
-//                     next()
-//                 }
-//                 next({name: "LoginPanel", params: {next: to.fullPath}})
-//             }
-//         }, error => {
-//             console.log(error)
-//             next({name: "LoginPanel", params: {next: to.fullPath}})
-//         })
-//     } else {
-//         next({name: "LoginPanel", params: {next: to.fullPath}})
-//     }
-// }
+function loginGuard(to, from, next) {
+    console.log("from", from, "to", to)
+    api({
+        method: "POST",
+        url: "user/autoLogin",
+    }).then((response) => {
+        console.log("autoLogin", response)
+        if (response.status == 200) {
+            next()
+        } else {
+            if (from.fullPath === '/login') {
+                next()
+            }
+            next({name: "LoginPanel", params: {next: to.fullPath}})
+        }
+    }, error => {
+        console.log(error)
+        next({name: "LoginPanel", params: {next: to.fullPath}})
+    })
+}
 
 const routes = [
     {
@@ -115,7 +106,7 @@ const routes = [
         path: "/notzification",
         name: "Notification",
         component: Notification,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/orderDetail/:OrderId",
@@ -144,7 +135,7 @@ const routes = [
       path: "/publishCommodity",
       name: "PublishCommodity",
       component: PublishCommodity,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/user/:id",
@@ -156,13 +147,13 @@ const routes = [
         path: "/likes",
         name: "likes",
         component: likes,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/shoppingCart",
         name: "ShoppingCart",
         component: ShoppingCart,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/posts",

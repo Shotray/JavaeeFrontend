@@ -60,7 +60,7 @@
         <el-dropdown>
           <div>
             <el-avatar
-                :src="user.avatar ? 'https://139.196.20.137:5001/' + user.avatar : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'">
+                :src="user.avatar">
             </el-avatar>
             <span class="user-name pl-5 ">{{ user.name ? user.name : "去登陆" }}</span>
           </div>
@@ -81,8 +81,10 @@
 </template>
 
 <script>
+import {api} from "@/request";
 import {useStore} from 'vuex'
-import {CookieManager} from "@/cookie";
+import {ElMessage} from "element-plus";
+// import {CookieManager} from "@/cookie";
 // import {api} from "@/request";
 
 export default {
@@ -95,6 +97,7 @@ export default {
   },
   computed: {
     user() {
+      console.log(this.store.getters['user/userInfo'])
       return this.store.getters['user/userInfo']
     }
 
@@ -107,36 +110,44 @@ export default {
   },
   methods: {
     logout() {
-      this.store.commit("user/userLogout")
-      CookieManager.del("token")
-      this.$router.push("/")
+      api({
+      method: "POST",
+      data: {},
+      url: "user/logout"
+    }).then(() => {
+      ElMessage.success({
+        message: '操作成功',
+        type: 'success'
+      })
+    }, (error) => {
+      console.log(error)
+      if (error.response.status == 401){
+        ElMessage.success({
+        message: "请先登录",
+        type: 'success'
+        })
+      }
+      else{
+        ElMessage.error({
+          message: '服务器在开小差...',
+          type: 'error'
+        })
+      }
+    })
     }
   },
-  // mounted() {
-  //   if (!this.user.loggedIn) {
-  //     let token = CookieManager.get("token")
-  //     let formData = new FormData()
-  //     formData.append("token", token)
-  //     api({
-  //       method: "POST",
-  //       url: "user/autoLogin",
-  //       data: formData
-  //     }).then(response => {
-  //       if (response.data.Code === '200') {
-  //         let user = response.data.User
-  //         this.store.commit("user/userLogin", user)
-  //         console.log("in header store values", this.store.getters['user/userInfo'])
-  //       } else {
-  //         console.log("Header fail with response", response)
-  //         console.log("in header store values", this.store.getters['user/userInfo'])
-  //       }
-  //     }, error => {
-  //       console.log("header fail with error", error)
-  //     })
-  //   } else {
-  //     console.log("in header store values", this.store.getters['user/userInfo'])
-  //   }
-  // },
+  mounted() {
+      api({
+        method: "POST",
+        url: "user/autoLogin",
+      }).then(response => {
+          let user = response.data
+          this.store.commit("user/userLogin", user)
+          console.log("user", user)
+      }, error => {
+        console.log("header fail with error", error)
+      })
+  },
 }
 
 
