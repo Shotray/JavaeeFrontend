@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pageSize: 2,
+      pageSize: 5,
       postList: undefined,
       totalPage: undefined,
     }

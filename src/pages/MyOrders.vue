@@ -112,9 +112,10 @@ export default {
 
       api({
         method: 'get',
-        url: "order?userID=" + this.store.getters['user/userInfo'].id
+        url: "/me/order"
       })
       .then( (response) => {
+        console.log("这是MyOrder的输出");
         var orders = response.data.OrderList;
         console.log(orders);
         this.orderList = [];

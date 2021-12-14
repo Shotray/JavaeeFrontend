@@ -20,7 +20,7 @@ export default {
 <style scoped>
 
 .commodity-form {
-  /* height: 100%; */
+  height: 100%;
   background-image: linear-gradient(#5698c3, #d1c2d3);
   @apply p-10;
 }

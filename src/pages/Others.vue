@@ -61,16 +61,11 @@ export default {
     return {
       imageUrl: null,
       user: {
-        "SchoolId": "null",
-        "Nickname": "null",
-        "RealName": "null",
-        "Phone": "0000000000",
-        "Major": "OT",
-        "Credit": 0,
-        "Role": "null",
-        "Grade": 1,
-        "Brief": "null",
-        "AvatarPath": "null"
+        "userNickname": "null",
+        "userName": "null",
+        "userPhone": "0000000000",
+        "userSex": "null",
+        "userImage": "null"
       },
     }
   },
@@ -79,9 +74,9 @@ export default {
       method: 'GET',
       url: "user/" + this.id
     }).then( response => {
-      if (response.data.Code === '200') {
+      if (response.status === 200) {
         this.user = response.data.User
-        this.imageUrl = this.user.AvatarPath
+        this.imageUrl = this.user.userImage
       }
     })
   },
