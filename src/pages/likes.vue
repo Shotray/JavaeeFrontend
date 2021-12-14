@@ -2,7 +2,12 @@
   <el-main>
     <div v-for="item in tableData" :key="item.favoritesName">
       <el-row>
-        <h2 class="page-section-title">{{ item.favoritesName }}</h2>
+        <el-col :span="20">
+          <h2 class="page-section-title">{{ item.favoritesName }}</h2>
+        </el-col>
+        <el-col :span="1">
+          <el-button  type="info" icon="el-icon-delete" circle> </el-button>
+        </el-col>
       </el-row>
       <el-row>
         <el-col
@@ -20,6 +25,9 @@
         </el-col>
       </el-row>
     </div>
+    <el-row class="row">
+      <el-button type="primary" @click="clickAddButton">+</el-button>
+    </el-row>
   </el-main>
 </template>
 
@@ -73,6 +81,16 @@
   border-width: 0px;
   color: #e6e6e6;
 }
+
+.el-button {
+  height: 50px;
+  width: 50px;
+  top:40px;
+}
+
+.row{
+  text-align: center;
+}
 </style>
 
 <script>
@@ -101,7 +119,7 @@ export default {
               price: 100,
               offset: 0,
             },
-            {
+            { 
               picture:
                 "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
               name: "test",
@@ -145,31 +163,18 @@ export default {
     };
   },
   mounted() {
-    console.log(this.tableData[1].goods.name);
-    this.$nextTick(() => {
-      let user = this.store.getters["user/userInfo"];
-      let userId = user.id;
-      console.log("Likes/" + userId.replaceAll('"', ""));
-      const that = this;
+   
+  },
+  methods: {
+    clickAddButton(){
+      var data = {"favoritesName":"test"}
       api({
-        url: "Likes/" + userId.replaceAll('"', ""),
-        method: "get",
+        url: "favorites/createFavorites",
+        method: "post",
+        data: data,
       })
         .then(function (response) {
-          console.log(JSON.stringify(response.data));
-          that.tableData = [];
-          for (let i = 0; i < response.data["ItemList"].length; i++) {
-            let temp = {};
-            temp["price"] = Number(
-              response.data["ItemList"][i]["CommodityPrice"]
-            );
-            temp["commodity"] = response.data["ItemList"][i]["CommodityName"];
-            temp["id"] = response.data["ItemList"][i]["CommodityId"];
-            temp["image"] =
-              "https://139.196.20.137:5001/" +
-              response.data["ItemList"][i]["CommodityCover"];
-            that.tableData.push(temp);
-          }
+          console.log(JSON.stringify(response.data))
         })
         .catch(function (error) {
           console.log(error);
@@ -178,9 +183,7 @@ export default {
             type: "error",
           });
         });
-    });
-  },
-  methods: {
+    },
     deleteRow(index, rows) {
       let commodityId = rows[index]["id"];
       let user = this.store.getters["user/userInfo"];

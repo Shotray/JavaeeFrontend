@@ -147,7 +147,7 @@ const routes = [
         path: "/likes",
         name: "likes",
         component: likes,
-        beforeEnter: loginGuard
+        // beforeEnter: loginGuard
     },
     {
         path: "/shoppingCart",
