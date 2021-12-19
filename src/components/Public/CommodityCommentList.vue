@@ -29,7 +29,8 @@ export default {
     canLoad: Boolean
   },
   created() {
-    this.count = Math.min(6, this.comments.length)
+    this.count = Math.min(6, this.comments.length);
+    console.log("-----------------评论数目"+this.count);
   },
   methods: {
     load: function () {

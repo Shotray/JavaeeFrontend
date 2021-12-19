@@ -2,7 +2,7 @@
     <div class="block">
     <el-carousel trigger="click">
       <el-carousel-item v-for="item in urls" :key="item">
-        <div class="imgdiv">
+        <div class="imgDiv">
           <img class="window-img" :src="item">
         </div>
       </el-carousel-item>
@@ -41,7 +41,7 @@ export default {
   justify-content: center;
 }
 
-.imgdiv {
+.imgDiv {
   display: flex;
   justify-content: center;
   align-items: center;
