@@ -140,7 +140,7 @@ export default {
       },
       simpleUser: undefined,
       imageUrl: "",
-      file: undefined,
+      file: [],
     };
   },
   methods: {
@@ -149,27 +149,37 @@ export default {
     },
 
     beforeAvatarUpload(file) {
-      console.log("file", file);
+      console.log("files", file);
       let formData = new FormData();
-      this.file = file;
-      formData.append("Avatar", this.file);
+      this.file.push(file);
+      for(let i = 0;i < this.file.length;i++) {
+          formData.append("files",this.file[i]);
+          console.log(this.file[i]);
+        }
+      // this.file = file;
+      // formData.append("Avatar", this.file);
       api({
         // 需要商量url
         method: "put",
         // url: "user/" + this.id,
-        url: "/me/info",
+        url: "/me/image",
         data: formData,
+        headers: {
+                'Content-Type': 'multipart/form-data'
+            },
       }).then((response) => {
         console.log(response);
         if (response.status === 200) {
           ElMessage.success("上传成功！");
           api({
             method: "get",
-            url: "user/" + this.id,
+            url: "/me/info",
           }).then((res) => {
-            if (response.status === 200) {
-              this.imageUrl = res.data.User.AvatarPath;
-              this.store.commit("user/uerAvatarChange", this.imageUrl);
+            if (res.status === 200) {
+              console.log("更改头像了------------");
+              console.log(res);
+              // this.imageUrl = res.data.User.AvatarPath;
+              // this.store.commit("user/uerAvatarChange", this.imageUrl);
             }
           });
         }
@@ -188,7 +198,7 @@ export default {
     }).then(
       (response) => {
         console.log(response);
-        console.log("12345667");
+        // console.log("12345667");
         if (response.status === 200) {
           this.user = response.data;
           // this.user = response.data.User
