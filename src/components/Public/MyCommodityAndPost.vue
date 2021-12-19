@@ -13,16 +13,17 @@
               <template #default="scope">
               <el-image
                   style="width: 100px; height: 100px"
-                  :src='"https://139.196.20.137:5001/"+commodities[scope.$index].Cover'></el-image>
+                  :src='commodities[scope.$index].image'>
+              </el-image>
               </template>
             </el-table-column>
             <el-table-column
-                prop="Name"
+                prop="goodsEntity.goodsName"
                 label="商品名称"
                 class="w-1/3">
             </el-table-column>
             <el-table-column
-                prop="Price"
+                prop="goodsEntity.goodsPrice"
                 label="商品价格"
                 class="w-1/3">
             </el-table-column>
@@ -145,17 +146,18 @@ export default {
   },
   mounted() {
     api({
-      url:"commodity",
+      url:"/me/goods",
       method: "GET",
       params: {
         userId: this.id,
       }
     }).then(
         (response) => {
+          console.log("这是啥玩")
           console.log(response);
 
-          if(response.data["Code"] === "200"){
-            this.commodities=response.data["commodityList"];
+          if(response.status === 200){
+            this.commodities=response.data;
           }
         }
     )
