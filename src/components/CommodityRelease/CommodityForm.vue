@@ -58,6 +58,7 @@
             :on-remove="handleRemove"
             :on-change="handleChange"
             :limit="5"
+            :on-exceed="handleExceed"
         >
           <template #default>
             <i class="el-icon-plus"></i>
@@ -98,49 +99,44 @@
 </template>
 
 <script>
-import {useStore} from "vuex";
-import {api} from "@/request";
-import {ElMessage} from "element-plus";
-import {staticData} from "@/assets/js/static";
+import { useStore } from "vuex";
+import { api } from "@/request";
+import { ElMessage } from "element-plus";
+import { staticData } from "@/assets/js/static";
 
 export default {
   name: "CommodityForm",
   data() {
     return {
       ruleForm: {
-        name: '',
-        category: '',
+        name: "",
+        category: "",
         forRent: false,
         price: 9.9,
         type: [],
-        resource: '',
-        desc: '',
-        unit: '件',
-        stock: 1
+        resource: "",
+        desc: "",
+        unit: "件",
+        stock: 1,
       },
       rules: {
         name: [
-          {required: true, message: '请输入商品名', trigger: 'blur'},
-          {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+          { required: true, message: "请输入商品名", trigger: "blur" },
+          {
+            min: 3,
+            max: 20,
+            message: "长度在 3 到 20 个字符",
+            trigger: "blur",
+          },
         ],
-        category: [
-          {required: true, message: '请选择分类', trigger: 'blur'}
-        ],
-        price: [
-          {required: true, message: '请输入价格', trigger: 'blur'}
-        ],
-        desc: [
-          {required: true, message: '请填写商品简介', trigger: 'blur'}
-        ],
+        category: [{ required: true, message: "请选择分类", trigger: "blur" }],
+        price: [{ required: true, message: "请输入价格", trigger: "blur" }],
+        desc: [{ required: true, message: "请填写商品简介", trigger: "blur" }],
         images: [
-          {required: false, message: '至少上传一张商品图片', trigger: 'blur'}
+          { required: false, message: "至少上传一张商品图片", trigger: "blur" },
         ],
-        unit: [
-          {required: true, message: '请填写单位', trigger: 'blur'}
-        ],
-        stock: [
-          {required: true, message: '请填写库存', trigger: 'blur'}
-        ]
+        unit: [{ required: true, message: "请填写单位", trigger: "blur" }],
+        stock: [{ required: true, message: "请填写库存", trigger: "blur" }],
       },
       photoList: [],
       dialogImageUrl: "",
@@ -148,13 +144,11 @@ export default {
       disabled: false,
       dynamicTags: [],
       inputVisible: false,
-      inputValue: '',
-
+      inputValue: "",
     };
   },
   methods: {
     submitForm(formName) {
-
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let formData = new FormData();
@@ -167,59 +161,65 @@ export default {
           // formData.append("goods_favorite", 0)
           // formData.append("goods_unit", this.ruleForm.category)
           let data = {
-              "goodsCategory": this.ruleForm.category,
-              "goodsName": this.ruleForm.name,
-              "goodsPrice": this.ruleForm.price,
-              "sellNum": this.ruleForm.stock,
-              "sellStatus": 1,
-              "goodsIntroduction": this.ruleForm.desc,
-              "goodsFavorite": 0,
-              "goodsUnit": this.ruleForm.unit
-            }
-          formData.append("formData", new Blob([JSON.stringify(data)], {type: "application/json"}));
+            goodsCategory: this.ruleForm.category,
+            goodsName: this.ruleForm.name,
+            goodsPrice: this.ruleForm.price,
+            sellNum: this.ruleForm.stock,
+            sellStatus: 1,
+            goodsIntroduction: this.ruleForm.desc,
+            goodsFavorite: 0,
+            goodsUnit: this.ruleForm.unit,
+          };
+          formData.append(
+            "formData",
+            new Blob([JSON.stringify(data)], { type: "application/json" })
+          );
           for (let i = 0; i < this.photoList.length; i++) {
-            console.log("file", this.photoList[i])
-            formData.append("files", this.photoList[i].raw)
+            console.log("file", this.photoList[i]);
+            formData.append("files", this.photoList[i].raw);
           }
 
           api({
             method: "post",
             data: formData,
-            url: '/goods/publish',
+            url: "/goods/publish",
             headers: {
-                'Content-Type': 'multipart/form-data'
+              "Content-Type": "multipart/form-data",
             },
-          }).then(response => {
-            console.log(response.data)
-            if (response.status == 200) {
-              ElMessage.success({
-                message: "上传成功"
-              })
-              this.$router.push('/me')
-            } else {
-              ElMessage.error({
-                message: "上传失败，请检查数据"
-              })
+          }).then(
+            (response) => {
+              console.log(response.data);
+              if (response.status == 200) {
+                ElMessage.success({
+                  message: "上传成功",
+                });
+                this.$router.push("/me");
+              } else {
+                ElMessage.error({
+                  message: "上传失败，请检查数据",
+                });
+              }
+            },
+            (error) => {
+              console.log(error);
             }
-          }, error => {
-            console.log(error)
-          })
+          );
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
     },
 
     handleClose(tag) {
-      console.log("tags", this.dynamicTags)
+      console.log("tags", this.dynamicTags);
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
     },
 
     showInput() {
       this.inputVisible = true;
-      this.$nextTick(_ => {
-        console.log(_)
+      this.$nextTick((_) => {
+        console.log(_);
         this.$refs.saveTagInput.$refs.input.focus();
       });
     },
@@ -230,14 +230,14 @@ export default {
         this.dynamicTags.push(inputValue);
       }
       this.inputVisible = false;
-      this.inputValue = '';
+      this.inputValue = "";
     },
 
     forRentChange(c) {
       if (c) {
-        this.ruleForm.unit = "一天"
+        this.ruleForm.unit = "一天";
       } else {
-        this.ruleForm.unit = "件"
+        this.ruleForm.unit = "件";
       }
     },
 
@@ -246,41 +246,50 @@ export default {
     },
 
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
     },
 
     handleRemove(file) {
-      console.log(file)
-      for(var i = 0; i < this.photoList.length; i++){
-        if(file.uid == this.photoList[i].uid){
-          console.log(this.photoList[i].uid)
-            this.photoList.splice(i,1)
+      console.log(file);
+      for (var i = 0; i < this.photoList.length; i++) {
+        if (file.uid == this.photoList[i].uid) {
+          console.log(this.photoList[i].uid);
+          this.photoList.splice(i, 1);
         }
       }
     },
 
     handleChange(file, list) {
-      for (let i = 0; i < list.length; i++) {
-        this.photoList.push(list[i])
-      }
-      console.log(this.photoList)
-    }
+      console.log("已经有" + this.photoList.length);
+      this.photoList.push(list[list.length - 1]);
+
+      // for (let i = 0; i < list.length; i++) {
+      //   this.photoList.push(list[i])
+      // }
+      // console.log("上传的商品照片");
+      // console.log(this.photoList);
+    },
+    handleExceed() {
+      console.log("满了");
+      ElMessage.error({
+        message: "上传失败，已经达到最大照片数！",
+      });
+    },
   },
   setup() {
-    let store = useStore()
-    let categories = staticData.categories
+    let store = useStore();
+    let categories = staticData.categories;
     return {
       store,
-      categories
-    }
-  }
-}
+      categories,
+    };
+  },
+};
 </script>
 
 
 <style scoped>
-
 .form-box {
   display: inline-block;
   width: 50vw;
@@ -293,5 +302,4 @@ export default {
   max-width: 4rem;
   width: 9vw;
 }
-
 </style>

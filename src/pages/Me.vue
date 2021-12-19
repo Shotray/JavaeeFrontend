@@ -5,7 +5,7 @@
         <el-col :span="5" :offset="1">
           <el-card class="avatar-card" :body-style="{ padding: '35px' }">
             <img :src="user.userImage" alt="" />
-            <el-upload
+            <!-- <el-upload
               class="avatar-uploader"
               :before-upload="beforeAvatarUpload"
               :show-file-list="false"
@@ -20,7 +20,7 @@
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </div>
               </div>
-            </el-upload>
+            </el-upload> -->
           </el-card>
         </el-col>
         <el-col :span="10" :offset="1">

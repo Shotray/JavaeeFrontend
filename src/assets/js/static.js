@@ -66,5 +66,9 @@ export const staticData = {
         ["电器", 4, 'el-icon-mobile-phone'],
         ["日用品", 5, 'el-icon-discount'],
         ["食物", 6, 'el-icon-fork-spoon'],
+    ],
+    sex: [
+        ["男", 1, 'el-icon-male'],
+        ["女", 0, 'el-icon-female'],
     ]
 }

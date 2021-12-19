@@ -96,13 +96,16 @@ export default {
     },
     deletePost(index) {
       api({
-        url: "post/"+this.posts[index].PostId,
-        method: "DELETE"
+        url: "post/delete",
+        method: "DELETE",
+        params: {
+          id: this.posts[index].postId,
+      }
       }).then(
           (response) => {
             console.log(response);
 
-            if (response.data['Code'] === '200') {
+            if(response.status === 200) {
               ElMessage.success({
                 message: "删除成功",
                 type: "success",
@@ -121,13 +124,16 @@ export default {
     },
     deleteCommodity(index) {
       api({
-        url: "commodity/"+this.commodities[index].Id,
-        method: "DELETE"
+        url: "goods/delete",
+        method: "DELETE",
+        params: {
+          id: this.commodities[index].goodsEntity.goodsId,
+      }
       }).then(
           (response) => {
             console.log(response);
 
-            if (response.data['Code'] === '200') {
+            if(response.status === 200) {
               ElMessage.success({
                 message: "删除成功",
                 type: "success",

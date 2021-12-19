@@ -34,16 +34,15 @@
             <p >{{Time}}</p>
           </div>
 
-          <div class="flex justify-center space-x-20 md:space-x-96">
+          <div class="flex justify-center space-x-20 md:space-x-96 mb-8">
             <el-button type="primary" icon="el-icon-chat-dot-square" @click="sendContact" round>联系买家</el-button>
             <comment :isRating="F" :userId="simpleUserId" :id="ID" ></comment>
 
           </div>
-          <div class="ml-20 flex float-right text-1xl">
-              <!-- 举报按钮 -->
+          <!-- <div class="ml-20 flex float-right text-1xl">
               <p>点击举报</p>
               <report ></report>
-            </div>
+            </div> -->
         </div>
       </div>
       <div>
@@ -61,7 +60,7 @@
 
 <script>
 
-import report from "@/components/Public/Report";
+// import report from "@/components/Public/Report";
 import comment from "@/components/Public/comment";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import {api} from "@/request";
@@ -75,7 +74,7 @@ import {useStore} from "vuex";
 export default {
   name: "PostDetail",
   components: {
-    report,CommodityCommentList,comment
+    CommodityCommentList,comment
   },
   data() {
     return {
