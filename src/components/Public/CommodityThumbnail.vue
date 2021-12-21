@@ -31,7 +31,7 @@
             class="w-7 h-7 rounded-full"
             :src="commodity.userImage ?  commodity.userImage : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
         >
-        <p class="pl-2 text-sm leading-7"> {{ commodity.SellerName ? commodity.SellerName : "神秘人" }} </p>
+        <p class="pl-2 text-sm leading-7"> {{ commodity.userNickname ? commodity.userNickname : "神秘人" }} </p>
       </div>
       </router-link>
     </div>

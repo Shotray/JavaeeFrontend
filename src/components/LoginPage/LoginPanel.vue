@@ -89,12 +89,6 @@ export default {
               type: 'error'
               })
             }
-            else{
-              ElMessage.error({
-                message: '服务器在开小差...',
-                type: 'error'
-              })
-            }
           })
     }
   },

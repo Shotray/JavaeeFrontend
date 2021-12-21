@@ -150,16 +150,17 @@ export default {
       console.log('commodity?' + this.getFormData() + '=' + data.get(this.getFormData()))
       console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
       const that = this
+      console.log('commodity/?' + this.getFormData() + '=' + data.get(this.getFormData()))
       api({
-        url: 'commodity/?' + this.getFormData() + '=' + data.get(this.getFormData()),
+        url: 'commodity/' + this.getFormData() + '?keyword=' + data.get(this.getFormData()),
         method: 'get',
       })
           .then(function (response) {
             console.log(JSON.stringify(response.data))
-            if (response.data.Code === "200") {
+            if (response.status === 200) {
               console.log('接收成功');
-              that.totalPage = Number(response.data["totalPage"])
-              that.commodityList = response.data["commodityList"]
+              that.totalPage = parseInt(response.data.length / 32)
+              that.commodityList = response.data
               console.log(that.commodityList[0])
               that.setPopularList()
               that.setCurrentList()
@@ -236,7 +237,7 @@ export default {
     setPopularList: function () {
       this.popularList = this.commodityList
       console.log(this.popularList)
-      this.popularList = this.popularList.sort(this.compare('Likes'))
+      this.popularList = this.popularList.sort(this.compare('goodsFavorite'))
       console.log('-------------------------------------------------')
       console.log(this.popularList[0])
     },

@@ -89,7 +89,7 @@ export default {
     // let defaultCat = this.categories[this.defaultActive][1]
     api({
       method: "GET",
-      url: "goods/classification/1",
+      url: "commodity/classification/1",
     }).then( (response) => {
       console.log(response.data)
       if (response.status == 200) {
