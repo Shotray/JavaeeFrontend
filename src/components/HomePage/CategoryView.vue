@@ -71,7 +71,7 @@ export default {
       let cat = this.categories[key][1]
       api({
         method: "GET",
-        url: "goods/classification/" + cat,
+        url: "commodity/classification/" + cat,
       }).then( (response) => {
         console.log(response)
       if (response.status == 200) {

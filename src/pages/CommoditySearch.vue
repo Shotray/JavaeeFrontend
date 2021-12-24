@@ -99,7 +99,7 @@ export default {
       currentPopularList: [],
       currentPage: 1,
       selectType: '宝贝',
-      selectTypeList: ['宝贝', '卖家名', '标签'],
+      selectTypeList: ['宝贝', '卖家名'],
       formData: ['keyword', 'owner', 'tag'],
       selectId: 1,
       isAlert: false,
@@ -189,6 +189,7 @@ export default {
     },
     pageJump: function () {
       let str = this.input.replace(' ', '');
+      console.log(str)
       if (str.length === 0) {
         ElMessage.warning({
           message: '搜索内容不能为空',

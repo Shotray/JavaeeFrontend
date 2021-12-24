@@ -94,7 +94,7 @@ const routes = [
         path: "/me",
         name: "me",
         component: Me,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/editInfo",
@@ -135,7 +135,7 @@ const routes = [
       path: "/publishCommodity",
       name: "PublishCommodity",
       component: PublishCommodity,
-        //beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/user/:id",
@@ -147,7 +147,7 @@ const routes = [
         path: "/likes",
         name: "likes",
         component: likes,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/shoppingCart",

@@ -49,8 +49,8 @@
         :router="true"
     >
       <el-menu-item class="inputSearch">
-        <input type="text" placeholder="请输入您要搜索的内容..." />
-        <router-link :to="'/commoditySearch?key=' + input"><el-button class="circleButton" size="small" type="info" icon="el-icon-search" circle></el-button></router-link>
+        <input v-model="keyword" type="text" placeholder="请输入您要搜索的内容..." />
+        <router-link :to="'/commoditySearch?key=' + keyword"><el-button class="circleButton" size="small" type="info" icon="el-icon-search" circle></el-button></router-link>
       </el-menu-item>
       <el-menu-item index="/publishCommodity"><i class="el-icon-upload"></i>发布新商品</el-menu-item>
       <!-- <el-menu-item index="/notification"><i class="el-icon-message-solid"></i>消息</el-menu-item> -->
@@ -92,6 +92,7 @@ export default {
   props: {},
   data() {
     return {
+      keyword: "",
       store: null
     }
   },

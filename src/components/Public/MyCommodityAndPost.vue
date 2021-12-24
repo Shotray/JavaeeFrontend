@@ -124,7 +124,7 @@ export default {
     },
     deleteCommodity(index) {
       api({
-        url: "goods/delete",
+        url: "commodity/delete",
         method: "DELETE",
         params: {
           id: this.commodities[index].goodsEntity.goodsId,
