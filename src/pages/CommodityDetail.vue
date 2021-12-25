@@ -162,9 +162,6 @@ export default {
   data: function () {
     return {
       commodityId: '1',
-      userId: '1850061',
-      userName: 'rzc',
-      ownerId: '1850061',
       ownerName: 'rzc',
       ownerAvatar: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png",
       name: "自动编程机",
@@ -215,70 +212,86 @@ export default {
       let FormData = require('form-data');
       let data = new FormData();
       const that = this
-      data.append('id', this.commodityId);
-      console.log('commodityId:' + data.get('id'))
+      data.append('commodityId', this.commodityId);
+      console.log(data);
       api({
-        url: 'commodity?id=' + data.get('id'),
+        url: "/commodity/detailed?commodityId="+this.commodityId,
         method: 'get',
+      }).then(response => {
+        console.log(response.data)
+        this.ownerName = response.data['userName']
+        this.ownerAvatar = response.data['userImage']
+        this.name = response.data['goodsName']
+        this.likes = response.data['likes']
+        this.description = response.data['description']
+        this.category = response.data['category']
+        this.price = response.data['price']
+        for(let i = 0;i<response.data['goodsImage'].length;i++) {
+          this.images.push(response.data['goodsImage'][i])
+        }
       })
-          .then(function (response) {
-            console.log(JSON.stringify(response.data['commodityList'][0]));
-            let commo = response.data['commodityList'][0]
-            that.ownerId = commo['SellerId']
-            that.ownerName = commo['SellerName']
-            that.ownerAvatar = 'https://139.196.20.137:5001/' + commo['SellerAvatar']
-            that.name = commo['Name']
-            that.price = Number(commo["Price"])
-            that.likes = Number(commo["Likes"])
-            that.description = commo["Description"]//生成
-            if(that.description === undefined || that.description === null)
-            {
-              that.description = '这个用户很懒，没有填写商品介绍'
-            }
-            console.log('*********************************************')
-            console.log(that.description)
-            that.stock = Number(commo['Stock'])
-            that.for_rent = Boolean(commo['ForRent'])
-            let temp = response.data['ImgList']
-            for (let i = 0; i < temp.length; i++) {
-              that.images.push('https://139.196.20.137:5001/' + temp[i])
-            }
-            // if (commo['Cover'] !== undefined) {
-            //   that.images.push('https://139.196.20.137:5001/' + commo['Cover'])
-            // }
-            that.video = commo['VidePath']
-            if (that.video !== undefined) {
-              that.video = 'https://139.196.20.137:5001/' + that.video
-            }
-            if (that.images.length === 0) {
-              that.images = ["https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"]
-            }
-            that.status = commo['Condition']
-            that.popularity = 3 * Number(commo['Clicks']) + 10 * that.likes
-            that.clicks = Number(commo['Clicks'])
-            that.tags = commo['CommodityTag']
-            let comments = response.data["Comments"]
-            console.log('----------------------------------------')
-            console.log(comments)
-            for (let i = 0; i < response.data["Comments"].length; i++) {
-              let temp = {}
-              temp['userName'] = comments[i]['UserName']
-              temp['userImage'] = 'https://139.196.20.137:5001/' + comments[i]['UserImage']
-              temp['userId'] = Number(comments[i]['UserId'])
-              temp['comment'] = comments[i]['Comment']
-              temp['rating'] = comments[i]['Rating']
-              console.log(temp)
-              that.comments.unshift(temp)
-            }
-            console.log('++++++++++++++++++++++++++++++++++++++')
-          })
-          .catch(function (error) {
-            console.log(error);
-            ElMessage.error({
-              message: '服务器在开小差...',
-              type: 'error'
-            })
-          });
+      // api({
+      //   url: 'commodity?id=' + data.get('id'),
+      //   method: 'get',
+      // })
+      //     .then(function (response) {
+      //       console.log(JSON.stringify(response.data['commodityList'][0]));
+      //       let commo = response.data['commodityList'][0]
+      //       that.ownerId = commo['SellerId']
+      //       that.ownerName = commo['SellerName']
+      //       that.ownerAvatar = 'https://139.196.20.137:5001/' + commo['SellerAvatar']
+      //       that.name = commo['Name']
+      //       that.price = Number(commo["Price"])
+      //       that.likes = Number(commo["Likes"])
+      //       that.description = commo["Description"]//生成
+      //       if(that.description === undefined || that.description === null)
+      //       {
+      //         that.description = '这个用户很懒，没有填写商品介绍'
+      //       }
+      //       console.log('*********************************************')
+      //       console.log(that.description)
+      //       that.stock = Number(commo['Stock'])
+      //       that.for_rent = Boolean(commo['ForRent'])
+      //       let temp = response.data['ImgList']
+      //       for (let i = 0; i < temp.length; i++) {
+      //         that.images.push('https://139.196.20.137:5001/' + temp[i])
+      //       }
+      //       // if (commo['Cover'] !== undefined) {
+      //       //   that.images.push('https://139.196.20.137:5001/' + commo['Cover'])
+      //       // }
+      //       that.video = commo['VidePath']
+      //       if (that.video !== undefined) {
+      //         that.video = 'https://139.196.20.137:5001/' + that.video
+      //       }
+      //       if (that.images.length === 0) {
+      //         that.images = ["https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"]
+      //       }
+      //       that.status = commo['Condition']
+      //       that.popularity = 3 * Number(commo['Clicks']) + 10 * that.likes
+      //       that.clicks = Number(commo['Clicks'])
+      //       that.tags = commo['CommodityTag']
+      //       let comments = response.data["Comments"]
+      //       console.log('----------------------------------------')
+      //       console.log(comments)
+      //       for (let i = 0; i < response.data["Comments"].length; i++) {
+      //         let temp = {}
+      //         temp['userName'] = comments[i]['UserName']
+      //         temp['userImage'] = 'https://139.196.20.137:5001/' + comments[i]['UserImage']
+      //         temp['userId'] = Number(comments[i]['UserId'])
+      //         temp['comment'] = comments[i]['Comment']
+      //         temp['rating'] = comments[i]['Rating']
+      //         console.log(temp)
+      //         that.comments.unshift(temp)
+      //       }
+      //       console.log('++++++++++++++++++++++++++++++++++++++')
+      //     })
+      //     .catch(function (error) {
+      //       console.log(error);
+      //       ElMessage.error({
+      //         message: '服务器在开小差...',
+      //         type: 'error'
+      //       })
+      //     });
 
       var data2 = new FormData();
       data2.append('userId', this.userId);
