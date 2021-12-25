@@ -107,4 +107,10 @@ input {
 /* .circleButton {
   background-color: unset;
 } */
+.bg-repeat {
+  background-image: url("https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+}
 </style>

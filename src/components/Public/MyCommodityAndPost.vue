@@ -89,7 +89,8 @@ export default {
   },
   methods: {
     viewPostDetail(index) {
-      this.$router.push("/postDetail/"+this.posts[index].PostId);
+      console.log(this.posts[index].postId)
+      this.$router.push("/postDetail/"+this.posts[index].postId);
     },
     viewCommodityDetail(index) {
       this.$router.push("/commodityDetail/"+this.commodities[index].Id);

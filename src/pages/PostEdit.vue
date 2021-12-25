@@ -1,6 +1,8 @@
 <template>
   <el-container>
-    <el-main class="bg-no-repeat bg-cover" style="background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg')">
+    <!-- <el-main class="bg-no-repeat bg-cover bg-repeat" style="background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg')">
+     -->
+    <el-main class="bg-cover bg-repeat">
       <center>
       <el-form ref="form" :model="form" label-width="80px" class="bg-gray-100 w-3/5 border-4 rounded-xl border-opacity-100 pt-6 pr-6">
         <el-form-item label="标题">
@@ -146,5 +148,10 @@ export default {
 </script>
 
 <style scoped>
-
+  .bg-repeat {
+  background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+}
 </style>

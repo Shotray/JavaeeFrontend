@@ -65,7 +65,7 @@ import comment from "@/components/Public/comment";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import {api} from "@/request";
 
-import { toRaw } from '@vue/reactivity';
+// import { toRaw } from '@vue/reactivity';
 import {useStore} from "vuex";
 
 
@@ -79,16 +79,17 @@ export default {
   data() {
     return {
 
-      Images :[
+      // Images :[
 
-        "https://img2.baidu.com/it/u=2963238031,3642210617&fm=253&fmt=auto&app=138&f=JPEG?w=354&h=500",
-        "https://img1.baidu.com/it/u=457993954,2292183590&fm=26&fmt=auto",
-        "https://img14.360buyimg.com/pop/jfs/t1/187644/16/15000/274280/60fe0519E2ef4cf17/2927a2a62ece884a.jpg"
-      ],
+      //   "https://img2.baidu.com/it/u=2963238031,3642210617&fm=253&fmt=auto&app=138&f=JPEG?w=354&h=500",
+      //   "https://img1.baidu.com/it/u=457993954,2292183590&fm=26&fmt=auto",
+      //   "https://img14.360buyimg.com/pop/jfs/t1/187644/16/15000/274280/60fe0519E2ef4cf17/2927a2a62ece884a.jpg"
+      // ],
+      Images :[],
       Content :"这是一个商品的描述信息",
       SenderId :"",
       Time :"2021-12-19",
-      Title :"课程书籍",
+      Title :"",
       Sender: "",
       PostComments:["123"],
       Status :"",
@@ -104,60 +105,75 @@ export default {
     }
   },
   methods:{
+    
     handleClick: function (tab) {
       this.canLoad = tab['props']['label'] !== '商品描述';
     },
 
+    // sendContact() {
+    //   let formData = new FormData()
+    //   formData.append("senderId", this.simpleUserId)
+    //   formData.append('receiverId', this.SenderId)
+    //   formData.append("content", "Hi, 我看了你的帖子《" + this.Title + '》')
+
+    //   api({
+    //     method: "post",
+    //     url: 'chat',
+    //     data: formData
+    //   }).then( response => {
+    //     if (response.data.Code === '200') {
+    //       this.$router.push("/notification")
+    //     }
+    //   })
+    // },
     sendContact() {
-      let formData = new FormData()
-      formData.append("senderId", this.simpleUserId)
-      formData.append('receiverId', this.SenderId)
-      formData.append("content", "Hi, 我看了你的帖子《" + this.Title + '》')
-
-      api({
-        method: "post",
-        url: 'chat',
-        data: formData
-      }).then( response => {
-        if (response.data.Code === '200') {
-          this.$router.push("/notification")
-        }
-      })
+      this.$router.push("/")
     },
-
     getData(){
       // let simpleUser = this.store.getters['user/userInfo']
       // this.simpleUserId = simpleUser.id
       api({
-        url: "post/"+this.ID,
-        method: "get"
+        url: "post/" + this.ID,     
+        method: "get",
+        // params: {
+        //   "postId": this.ID
+        // },
       }).then(
           (res) => {
-            // console.log(res.data)
-            var data = res.data.Post
-            this.Images = data.Images
-            this.SenderName = data.SenderName
-            this.SenderId = data.SenderId
-            this.AvatarPath = data.AvatarPath
+            console.log("--------------求物贴详情")
+            console.log(res.data)
+            var data = res.data
+            // this.Images = data.Images
+            this.SenderName = data.postUser["userNickname"]
+            this.AvatarPath = data.postUser["userImage"]
             // console.log(this.AvatarPath)
-            this.Content = data.Content
-            this.Time = data.Time
-            this.Time=this.Time.replace("T"," ").substr(0,19);
-            this.Title = data.Title
-            this.PostComments = data.PostComments
-            let t = []
-            data.Comments.forEach(element => {
-              let temp={
-                userName: element.SenderName,
-                userImage: 'https://139.196.20.137:5001/'+element.AvatarPath,
-                userId: element.SenderId,
-                comment: element.Content,
-                rating: -1
-              }
-              t.push(temp)
-            });
-            this.comments = toRaw(t)
-            this.flag = true
+            this.Content = data.post["postIntroduction"]
+            this.Time = data.post["postDate"]
+            if (this.Time != null) {
+              this.Time = this.Time.substring(0, 10)
+            }
+            console.log(this.Time)
+            this.Title = data.post["postTitle"]
+            for (let i = 0; i < data.postImages.length; i++) {
+              this.Images.push(data.postImages[i]["imageUrl"]);
+            }
+            
+            console.log(this.Images)
+            console.log(this.Title)
+            // this.PostComments = data.PostComments
+            // let t = []
+            // data.Comments.forEach(element => {
+            //   let temp={
+            //     userName: element.SenderName,
+            //     userImage: 'https://139.196.20.137:5001/'+element.AvatarPath,
+            //     userId: element.SenderId,
+            //     comment: element.Content,
+            //     rating: -1
+            //   }
+            //   t.push(temp)
+            // });
+            // this.comments = toRaw(t)
+            // this.flag = true
 
           },
           (error) => {
@@ -177,7 +193,7 @@ export default {
       } else {
         this.ID = "946710726649"
       }
-      // this.getData()
+      this.getData()
     })
 
   },

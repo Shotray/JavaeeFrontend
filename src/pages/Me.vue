@@ -37,23 +37,6 @@
             <div class="text item">真实姓名：{{ user.userName }}</div>
             <div class="text item">性别：{{ user.userSex ? "男" : "女" }}</div>
             <div class="text item">电话号码：{{ user.userPhone }}</div>
-            <!-- <div class="text item">
-              专业：{{
-                majors.find((i) => {
-                  return i.value === user.Major
-                }).label
-              }} <span class="w-4"></span> 年级：{{
-                grades.find((i) => {
-                  return i.value === String(user.Grade)
-                }).label
-              }}
-            </div>
-            <div class="text item">
-              用户信用值：{{ user.Credit }}
-            </div>
-            <div class="text item">
-              用户个性签名：{{ user.Brief }}
-            </div> -->
           </el-card>
         </el-col>
         <el-col :span="5" :offset="1">
@@ -107,7 +90,7 @@
                 </MyOrders>
               </el-tab-pane>
             </el-tabs>
-          </el-tab-pane>
+        </el-tab-pane>
 
         </el-tabs>
       </el-row>
@@ -288,11 +271,11 @@ export default {
   min-width: 600px;
   height: 50vh;
   min-height: 400px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .bg-repeat {
-  background-image: url("https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg");
+  background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;

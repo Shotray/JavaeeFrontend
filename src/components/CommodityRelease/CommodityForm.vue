@@ -182,7 +182,7 @@ export default {
           api({
             method: "post",
             data: formData,
-            url: "/goods/publish",
+            url: "/commodity/publish",
             headers: {
               "Content-Type": "multipart/form-data",
             },
