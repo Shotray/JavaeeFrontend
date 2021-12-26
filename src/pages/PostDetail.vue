@@ -127,7 +127,7 @@ export default {
     //   })
     // },
     sendContact() {
-      this.$router.push("/")
+      this.$router.push("/chat")
     },
     getData(){
       // let simpleUser = this.store.getters['user/userInfo']

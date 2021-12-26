@@ -43,6 +43,7 @@ const likes = () =>
     import ("../pages/likes")
 const ShoppingCart = () =>
     import ("../pages/ShoppingCart")
+const Chat = ()=>import ("../components/Chat/Chat")
 
 
 function loginGuard(to, from, next) {
@@ -170,6 +171,12 @@ const routes = [
         path: "/OrderDetermine",
         name: "OrderDetermine",
         component: OrderDetermine,
+        // beforeEnter: loginGuard
+    },
+    {
+        path: "/chat",
+        name: "Chat",
+        component: Chat,
         // beforeEnter: loginGuard
     }
 ]
