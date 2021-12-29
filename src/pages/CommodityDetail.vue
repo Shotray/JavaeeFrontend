@@ -335,6 +335,61 @@ export default {
       } else {
         this.likes -= 1;
       }
+
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('userId', this.userId);
+      data.append('commodityId', this.commodityId);
+      console.log(data.get('userId'))
+      console.log(data.get('commodityId'))
+      api({
+        url: 'Likes',
+        method: 'post',
+        data: data
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            console.log('success')
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
+      //发送请求
+    },
+    staron: function (){
+      this.$msgbox({
+          title: '加入收藏夹',
+          // message: h('p', null, [
+          //   h('span', null, '内容可以是 '),
+          //   h('i', { style: 'color: teal' }, 'VNode')
+          // ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = '执行中...';
+              setTimeout(() => {
+                done();
+                setTimeout(() => {
+                  instance.confirmButtonLoading = false;
+                }, 300);
+              }, 3000);
+            } else {
+              done();
+            }
+          }
+        }).then(action => {
+          this.$message({
+            type: 'info',
+            message: 'action: ' + action
+          });
+        });
     },
     addShoppingCart: function () {
       //发送请求

@@ -13,10 +13,10 @@
           @selection-change="handleSelectionChange"
           style="width: 100%" class="col-span-7 mt-16 mb-8 rounded-lg border border-grey-200">
 
-        <el-table-column
+        <!-- <el-table-column
             type="selection"
-            label="选择" width="50" align="center">
-        </el-table-column>
+            label="选择" width="50" align="center"> -->
+        <!-- </el-table-column> -->
         <el-table-column
             prop="image"
             label="商品图片" width="275" align="center">
@@ -76,9 +76,12 @@
         </el-table-column>
 
       </el-table>
+      
 
     </div>
+
   </el-main>
+  
 </template>
 <script>
 import {useStore} from "vuex";
@@ -94,6 +97,7 @@ export default {
   data() {
     return {
       tableData: [],
+      selectedList: [],
     };
   },
   mounted() {
@@ -126,9 +130,6 @@ export default {
     })
   },
   methods: {
-    handleSelectionChange (val) {
-      console.log('选中的表格', val)
-    },
     handleChange(index, rows) {
       console.log(index);
       let goodsId = rows[index]['id']
@@ -197,7 +198,7 @@ export default {
           sums[index] = '总价';
           return;
         }
-        if (index === 4) {
+        if (index === 3) {
           sums[index] = 0
           for (let i = 0; i < this.tableData.length; i++) {
             sums[index] += Number(data[i]["price"]) * Number(data[i]["count"])
@@ -228,5 +229,10 @@ export default {
   background: -moz-linear-gradient(bottom right, #000, #fff); /* Firefox 3.6 - 15 */
   background-color: #93b5cf;
 }
+
+.el-form-item{
+  text-align: center;
+}
+
 
 </style>

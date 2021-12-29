@@ -101,7 +101,7 @@ const routes = [
         path: "/editInfo",
         name: "editPersonalInfo",
         component: EditInfo,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/notzification",
@@ -113,7 +113,7 @@ const routes = [
         path: "/orderDetail/:OrderId",
         name: "OrderDetail",
         component: OrderDetail,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/postDetail/:ID",
@@ -165,19 +165,19 @@ const routes = [
         path: "/postEdit",
         name: "PostEdit",
         component: PostEdit,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/OrderDetermine",
         name: "OrderDetermine",
         component: OrderDetermine,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     },
     {
         path: "/chat",
         name: "Chat",
         component: Chat,
-        // beforeEnter: loginGuard
+        beforeEnter: loginGuard
     }
 ]
 

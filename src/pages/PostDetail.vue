@@ -97,7 +97,7 @@ export default {
       AvatarPath:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Ftvax2.sinaimg.cn%2Fcrop.0.0.996.996.1024%2F00684JDgly8fhhjwmiw57j30ro0roq4s.jpg&refer=http%3A%2F%2Ftvax2.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642484846&t=9363d31a7fb6ae50d2ebce257849edbf",
       SenderName:"xny",
       F: false,
-
+      ownerID:"",
       rating:0,
       flag :true,
       simpleUserId :''
@@ -127,7 +127,15 @@ export default {
     //   })
     // },
     sendContact() {
-      this.$router.push("/chat")
+      // this.$router.push("/chat")
+      this.$router.push({
+           path: '/chat',
+           query: {
+             ID : this.ownerID,
+             SenderName:this.SenderName,
+             AvatarPath:this.AvatarPath
+           }
+         })
     },
     getData(){
       // let simpleUser = this.store.getters['user/userInfo']
@@ -157,7 +165,8 @@ export default {
             for (let i = 0; i < data.postImages.length; i++) {
               this.Images.push(data.postImages[i]["imageUrl"]);
             }
-            
+            this.ownerID=data.post["userId"]
+            console.log("ownerid---"+this.ownerID)
             console.log(this.Images)
             console.log(this.Title)
             // this.PostComments = data.PostComments
@@ -222,7 +231,7 @@ export default {
   height: 350px;
 }
 .bg-repeat{
-     background-image:url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg');
+     background-image:url('https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg');
                 background-repeat:no-repeat;
                 background-size:100% 100%;
                 -moz-background-size:100% 100%;
