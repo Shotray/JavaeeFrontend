@@ -76,9 +76,17 @@
         </el-table-column>
 
       </el-table>
+      
 
     </div>
+    <el-form ref="ruleForm" label-width="100%">
+  <el-form-item label-width="0">
+     <el-button type="primary" @click.prevent="settlement">结算</el-button>
+  </el-form-item>
+</el-form>
+
   </el-main>
+  
 </template>
 <script>
 import {useStore} from "vuex";
@@ -94,6 +102,7 @@ export default {
   data() {
     return {
       tableData: [],
+      selectedList: [],
     };
   },
   mounted() {
@@ -126,8 +135,14 @@ export default {
     })
   },
   methods: {
+    settlement(){
+      for (var item of this.selectedList){
+        console.log(item.count)
+      }
+    },
     handleSelectionChange (val) {
       console.log('选中的表格', val)
+      this.selectedList = val
     },
     handleChange(index, rows) {
       console.log(index);
@@ -228,5 +243,10 @@ export default {
   background: -moz-linear-gradient(bottom right, #000, #fff); /* Firefox 3.6 - 15 */
   background-color: #93b5cf;
 }
+
+.el-form-item{
+  text-align: center;
+}
+
 
 </style>

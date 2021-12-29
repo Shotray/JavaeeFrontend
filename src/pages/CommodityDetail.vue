@@ -143,7 +143,7 @@
 <script>
 import {ElMessage} from "element-plus";
 import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
-import report from "@/components/Public/Report";
+// import report from "@/components/Public/Report";
 import RentCommodity from "@/components/CommodityDetail/RentCommodity";
 import UserAndAvatar from "@/components/Public/UserAndAvatar";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
@@ -154,7 +154,7 @@ import {useStore} from "vuex";
 export default {
   name: "CommodityDetail",
   components: {
-    report,
+    // report,
     BuyCommodity,
     RentCommodity,
     UserAndAvatar,
@@ -371,10 +371,10 @@ export default {
     staron: function (){
       this.$msgbox({
           title: '加入收藏夹',
-          message: h('p', null, [
-            h('span', null, '内容可以是 '),
-            h('i', { style: 'color: teal' }, 'VNode')
-          ]),
+          // message: h('p', null, [
+          //   h('span', null, '内容可以是 '),
+          //   h('i', { style: 'color: teal' }, 'VNode')
+          // ]),
           showCancelButton: true,
           confirmButtonText: '确定',
           cancelButtonText: '取消',
