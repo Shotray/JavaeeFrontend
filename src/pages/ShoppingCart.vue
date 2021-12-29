@@ -10,9 +10,13 @@
           show-summary
           :summary-method="getSummaries"
           stripe="true"
+          @selection-change="handleSelectionChange"
           style="width: 100%" class="col-span-7 mt-16 mb-8 rounded-lg border border-grey-200">
 
-
+        <el-table-column
+            type="selection"
+            label="选择" width="50" align="center">
+        </el-table-column>
         <el-table-column
             prop="image"
             label="商品图片" width="275" align="center">
@@ -29,7 +33,7 @@
 
         <el-table-column
             prop="commodity"
-            label="商品名" width="225" align="center">
+            label="商品名" width="200" align="center">
           <template #default="scope">
           <span style="margin-left: 10px" class="text-xl font-semibold ">
             {{ scope.row.commodity }}
@@ -39,12 +43,16 @@
 
         <el-table-column
             prop="price"
-            label="单价" width="150" class="col-span-1" align="center">
+            label="单价" width="200" class="col-span-1" align="center">
         </el-table-column>
 
         <el-table-column
             prop="count"
-            label="购物车中数量" width="150" class="col-span-1" align="center">
+            label="购物车中数量" width="200" class="col-span-1" align="center">
+        <template #default="scope">
+          <el-input-number v-model="scope.row.count" @change="handleChange(scope.$index, tableData)" :min="1" :max="100" label="描述文字"></el-input-number>
+        </template>
+            
         </el-table-column>
 
         <el-table-column
@@ -118,6 +126,36 @@ export default {
     })
   },
   methods: {
+    handleSelectionChange (val) {
+      console.log('选中的表格', val)
+    },
+    handleChange(index, rows) {
+      console.log(index);
+      let goodsId = rows[index]['id']
+      let count = rows[index]['count']
+      let data = {"goodsId": goodsId, 'count': count}
+      api({
+        url: "shoppingCart/changeCount",
+        method: "put",
+        params: data,
+      })
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          if (response.status == 200) {
+            ElMessage.success({
+              message: '修改成功',
+              type: 'success'
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          ElMessage.error({
+            message: '服务器在开小差...',
+            type: 'error'
+          })
+        });
+    },
     deleteRow(index, rows) {
       let goodsId = rows[index]['id']
       let data = {"goodsId": goodsId}
@@ -127,23 +165,23 @@ export default {
         method: "delete",
         params: data,
       })
-          .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            if (response.status == 200) {
-              rows.splice(index, 1);
-              ElMessage.success({
-                message: '删除成功',
-                type: 'success'
-              });
-            }
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          if (response.status == 200) {
+            rows.splice(index, 1);
+            ElMessage.success({
+              message: '删除成功',
+              type: 'success'
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          ElMessage.error({
+            message: '服务器在开小差...',
+            type: 'error'
           })
-          .catch(function (error) {
-            console.log(error);
-            ElMessage.error({
-              message: '服务器在开小差...',
-              type: 'error'
-            })
-          });
+        });
     },
     buyCommodity(index, rows) {
       console.log(rows[index]);
@@ -155,11 +193,11 @@ export default {
       const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
-        if (index === 0) {
+        if (index === 1) {
           sums[index] = '总价';
           return;
         }
-        if (index === 3) {
+        if (index === 4) {
           sums[index] = 0
           for (let i = 0; i < this.tableData.length; i++) {
             sums[index] += Number(data[i]["price"]) * Number(data[i]["count"])
@@ -171,29 +209,6 @@ export default {
       return sums;
     },
   },
-
-  // mounted() {
-  //   let id = this.store.getters['user/userInfo'].id
-  //   api({
-  //     method: "get",
-  //     url: "ShoppingCart/"+id,
-  //   }).then( response => {
-  //     if (response.data.Code === '200') {
-  //       for (let i = 0; i < response.data['ItemList'].length; i++) {
-  //         let temp = {}
-  //         console.log('count', response.data['ItemList'][i]['Count'])
-  //         temp['count'] = Number(response.data['ItemList'][i]['Count'])
-  //         temp['price'] = Number(response.data['PriceList'][i])
-  //         temp['commodity'] = response.data['NameList'][i]
-  //         temp['id'] = response.data['ItemList'][i]['CommodityId']
-  //         temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
-  //         this.tableData.push(temp)
-  //       }
-  //     } else {
-  //       ElMessage.error("服务器在开小差...")
-  //     }
-  //   })
-  // },
 
   setup() {
     let store = useStore()
