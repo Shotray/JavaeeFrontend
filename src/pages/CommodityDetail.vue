@@ -368,14 +368,19 @@ export default {
     },
     addShoppingCart: function () {
       //发送请求
-      var FormData = require('form-data');
-      var data = new FormData();
-      data.append('commodityId', this.commodityId);
-      data.append('userId', this.userId);
+      // var FormData = require('form-data');
+      // var data = new FormData();
+      var data = {};
+      console.log(data);
+      data["goodsId"] = this.commodityId;
+      data["count"] = 3;
+      // data.append('goodsId', this.commodityId);
+      // data.append('count', 3);
+      console.log(data)
 
 
       api({
-        url: 'shoppingCart',
+        url: '/commodity/add/shoppingCart',
         method: 'post',
         data: data
       })
