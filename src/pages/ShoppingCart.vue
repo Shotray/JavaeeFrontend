@@ -13,10 +13,10 @@
           @selection-change="handleSelectionChange"
           style="width: 100%" class="col-span-7 mt-16 mb-8 rounded-lg border border-grey-200">
 
-        <el-table-column
+        <!-- <el-table-column
             type="selection"
-            label="选择" width="50" align="center">
-        </el-table-column>
+            label="选择" width="50" align="center"> -->
+        <!-- </el-table-column> -->
         <el-table-column
             prop="image"
             label="商品图片" width="275" align="center">
@@ -79,11 +79,6 @@
       
 
     </div>
-    <el-form ref="ruleForm" label-width="100%">
-  <el-form-item label-width="0">
-     <el-button type="primary" @click.prevent="settlement">结算</el-button>
-  </el-form-item>
-</el-form>
 
   </el-main>
   
@@ -135,15 +130,6 @@ export default {
     })
   },
   methods: {
-    settlement(){
-      for (var item of this.selectedList){
-        console.log(item.count)
-      }
-    },
-    handleSelectionChange (val) {
-      console.log('选中的表格', val)
-      this.selectedList = val
-    },
     handleChange(index, rows) {
       console.log(index);
       let goodsId = rows[index]['id']
@@ -212,7 +198,7 @@ export default {
           sums[index] = '总价';
           return;
         }
-        if (index === 4) {
+        if (index === 3) {
           sums[index] = 0
           for (let i = 0; i < this.tableData.length; i++) {
             sums[index] += Number(data[i]["price"]) * Number(data[i]["count"])
