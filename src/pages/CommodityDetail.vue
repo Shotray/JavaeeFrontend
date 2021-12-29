@@ -193,12 +193,12 @@
               class="ml-4 mr-2"
               >{{ description }}</el-tab-pane
             >
-            <el-tab-pane @click="canLoad = true" label="用户评论">
+            <!-- <el-tab-pane @click="canLoad = true" label="用户评论">
               <CommodityCommentList
                 :comments="comments"
                 :can-load="canLoad"
               ></CommodityCommentList>
-            </el-tab-pane>
+            </el-tab-pane> -->
           </el-tabs>
         </div>
         <br />
@@ -214,7 +214,7 @@ import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
 // import report from "@/components/Public/Report";
 import RentCommodity from "@/components/CommodityDetail/RentCommodity";
 import UserAndAvatar from "@/components/Public/UserAndAvatar";
-import CommodityCommentList from "@/components/Public/CommodityCommentList";
+// import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import { api } from "@/request";
 import { useStore } from "vuex";
 
@@ -225,7 +225,7 @@ export default {
     BuyCommodity,
     RentCommodity,
     UserAndAvatar,
-    CommodityCommentList,
+    // CommodityCommentList,
   },
   data: function () {
     return {
@@ -311,6 +311,19 @@ export default {
           this.favorites.push(temp);
         }
       })
+      api({
+        url:"/favorites/check/goods?goodsId="+this.commodityId,
+        method : "get",
+      }).then((response) => {
+        console.log(response);
+        if(response.data === true){
+          this.isLike = true;
+        }
+        else{
+          this.isLike = false;
+        }
+      })
+
     });
   },
   methods: {
@@ -334,6 +347,22 @@ export default {
         this.isLikeDialog = true;
       } else {
         this.likes -= 1;
+        api({
+        url: "/favorites/delete/goods?goodsId="+this.commodityId,
+        method: "delete",
+        })
+        .then((response) => {
+          console.log(response);
+          this.isLikeDialog = false;
+          ElMessage.success({
+            message: "从收藏夹中删除成功",
+            type: "success",
+          });
+        })
+        .catch( (error) =>{
+          console.log(error);
+          ElMessage.error("从收藏夹中删除失败");
+        });
       }
     },
     addShoppingCart: function () {
