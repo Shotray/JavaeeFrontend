@@ -57,7 +57,7 @@
             accept=".jpg,.jpeg,.png"
             :on-remove="handleRemove"
             :on-change="handleChange"
-            :limit="5"
+            :limit="4"
             :on-exceed="handleExceed"
         >
           <template #default>
@@ -133,7 +133,7 @@ export default {
         price: [{ required: true, message: "请输入价格", trigger: "blur" }],
         desc: [{ required: true, message: "请填写商品简介", trigger: "blur" }],
         images: [
-          { required: false, message: "至少上传一张商品图片", trigger: "blur" },
+          { required: true, message: "至少上传一张商品图片", trigger: "blur" },
         ],
         unit: [{ required: true, message: "请填写单位", trigger: "blur" }],
         stock: [{ required: true, message: "请填写库存", trigger: "blur" }],
@@ -152,14 +152,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let formData = new FormData();
-          // formData.append("goods_category", this.ruleForm.category)
-          // formData.append("goods_name", this.ruleForm.name)
-          // formData.append("goods_price", this.ruleForm.price)
-          // formData.append("sell_num", this.ruleForm.stock)
-          // formData.append("sell_status", 1)
-          // formData.append("goods_introduction", this.ruleForm.desc)
-          // formData.append("goods_favorite", 0)
-          // formData.append("goods_unit", this.ruleForm.category)
           let data = {
             goodsCategory: this.ruleForm.category,
             goodsName: this.ruleForm.name,
@@ -263,12 +255,6 @@ export default {
     handleChange(file, list) {
       console.log("已经有" + this.photoList.length);
       this.photoList.push(list[list.length - 1]);
-
-      // for (let i = 0; i < list.length; i++) {
-      //   this.photoList.push(list[i])
-      // }
-      // console.log("上传的商品照片");
-      // console.log(this.photoList);
     },
     handleExceed() {
       console.log("满了");

@@ -10,9 +10,13 @@
           show-summary
           :summary-method="getSummaries"
           stripe="true"
+          @selection-change="handleSelectionChange"
           style="width: 100%" class="col-span-7 mt-16 mb-8 rounded-lg border border-grey-200">
 
-
+        <el-table-column
+            type="selection"
+            label="选择" width="50" align="center">
+        </el-table-column>
         <el-table-column
             prop="image"
             label="商品图片" width="275" align="center">
@@ -122,6 +126,9 @@ export default {
     })
   },
   methods: {
+    handleSelectionChange (val) {
+      console.log('选中的表格', val)
+    },
     handleChange(index, rows) {
       console.log(index);
       let goodsId = rows[index]['id']
@@ -186,11 +193,11 @@ export default {
       const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
-        if (index === 0) {
+        if (index === 1) {
           sums[index] = '总价';
           return;
         }
-        if (index === 3) {
+        if (index === 4) {
           sums[index] = 0
           for (let i = 0; i < this.tableData.length; i++) {
             sums[index] += Number(data[i]["price"]) * Number(data[i]["count"])
@@ -202,29 +209,6 @@ export default {
       return sums;
     },
   },
-
-  // mounted() {
-  //   let id = this.store.getters['user/userInfo'].id
-  //   api({
-  //     method: "get",
-  //     url: "ShoppingCart/"+id,
-  //   }).then( response => {
-  //     if (response.data.Code === '200') {
-  //       for (let i = 0; i < response.data['ItemList'].length; i++) {
-  //         let temp = {}
-  //         console.log('count', response.data['ItemList'][i]['Count'])
-  //         temp['count'] = Number(response.data['ItemList'][i]['Count'])
-  //         temp['price'] = Number(response.data['PriceList'][i])
-  //         temp['commodity'] = response.data['NameList'][i]
-  //         temp['id'] = response.data['ItemList'][i]['CommodityId']
-  //         temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
-  //         this.tableData.push(temp)
-  //       }
-  //     } else {
-  //       ElMessage.error("服务器在开小差...")
-  //     }
-  //   })
-  // },
 
   setup() {
     let store = useStore()
