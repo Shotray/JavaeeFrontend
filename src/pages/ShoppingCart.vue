@@ -29,7 +29,7 @@
 
         <el-table-column
             prop="commodity"
-            label="商品名" width="225" align="center">
+            label="商品名" width="200" align="center">
           <template #default="scope">
           <span style="margin-left: 10px" class="text-xl font-semibold ">
             {{ scope.row.commodity }}
@@ -39,12 +39,16 @@
 
         <el-table-column
             prop="price"
-            label="单价" width="150" class="col-span-1" align="center">
+            label="单价" width="200" class="col-span-1" align="center">
         </el-table-column>
 
         <el-table-column
             prop="count"
-            label="购物车中数量" width="150" class="col-span-1" align="center">
+            label="购物车中数量" width="200" class="col-span-1" align="center">
+        <template #default="scope">
+          <el-input-number v-model="scope.row.count" @change="handleChange(scope.$index, tableData)" :min="1" :max="100" label="描述文字"></el-input-number>
+        </template>
+            
         </el-table-column>
 
         <el-table-column
@@ -118,6 +122,33 @@ export default {
     })
   },
   methods: {
+    handleChange(index, rows) {
+      console.log(index);
+      let goodsId = rows[index]['id']
+      let count = rows[index]['count']
+      let data = {"goodsId": goodsId, 'count': count}
+      api({
+        url: "shoppingCart/changeCount",
+        method: "put",
+        params: data,
+      })
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          if (response.status == 200) {
+            ElMessage.success({
+              message: '修改成功',
+              type: 'success'
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          ElMessage.error({
+            message: '服务器在开小差...',
+            type: 'error'
+          })
+        });
+    },
     deleteRow(index, rows) {
       let goodsId = rows[index]['id']
       let data = {"goodsId": goodsId}
@@ -127,23 +158,23 @@ export default {
         method: "delete",
         params: data,
       })
-          .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            if (response.status == 200) {
-              rows.splice(index, 1);
-              ElMessage.success({
-                message: '删除成功',
-                type: 'success'
-              });
-            }
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          if (response.status == 200) {
+            rows.splice(index, 1);
+            ElMessage.success({
+              message: '删除成功',
+              type: 'success'
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          ElMessage.error({
+            message: '服务器在开小差...',
+            type: 'error'
           })
-          .catch(function (error) {
-            console.log(error);
-            ElMessage.error({
-              message: '服务器在开小差...',
-              type: 'error'
-            })
-          });
+        });
     },
     buyCommodity(index, rows) {
       console.log(rows[index]);
