@@ -68,7 +68,7 @@
                                  class="flex items-center"></user-and-avatar>
               </div>
               <div class="ml-12 ">
-                <report class="ml-2"></report>
+                <!-- <report class="ml-2"></report> -->
               </div>
 
               <div class="mr-12 mt-6 flex items-center justify-start">
@@ -80,8 +80,8 @@
                 </div>
               </div>
               <div class="ml-12 mt-6 flex items-center justify-start ">
-                <img v-show="isLike===true" @click="star()" src="https://img.icons8.com/android/24/000000/star.png"/>
-                <img v-show="isLike===false" @click="star()"
+                <img v-show="isLike===true" @click="star_on" src="https://img.icons8.com/android/24/000000/star.png"/>
+                <img v-show="isLike===false" @click="star_off"
                      src="https://img.icons8.com/material-rounded/24/000000/star--v1.png"/>
                 <div><font class="mb-8 "> ：&nbsp;</font></div>
                 <div>
@@ -95,13 +95,14 @@
 
           <br/>
 
-          <div>
+          <!-- <div>
             <el-tabs type="border-card" stretch="true" class="w-96 text-center ">
               <el-tab-pane label="商品状况">{{ status === '' ? '不详' : status }}</el-tab-pane>
               <el-tab-pane label="存货量">{{ stock === '' ? '不详' : stock }}</el-tab-pane>
               <el-tab-pane label="是否为出租物">{{ for_rent === true ? '是' : '否' }}</el-tab-pane>
             </el-tabs>
-          </div>
+          </div> -->
+          <el-input-number v-model="shoppingCartCount" :min="1" :max="20"></el-input-number>
 
           <div class="flex justify-around mt-8">
             <div class="mr-8 ml-8" v-if="for_rent==true">
@@ -189,7 +190,8 @@ export default {
       dialogFormVisible: false,
       isAlert: true,
       tagTypes: ['success', '', 'info', 'warning', 'danger'],
-      canLoad: false
+      canLoad: false,
+      shoppingCartCount: 0,
 
     }
   },
@@ -366,18 +368,43 @@ export default {
           });
       //发送请求
     },
+    staron: function (){
+      this.$msgbox({
+          title: '加入收藏夹',
+          message: h('p', null, [
+            h('span', null, '内容可以是 '),
+            h('i', { style: 'color: teal' }, 'VNode')
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = '执行中...';
+              setTimeout(() => {
+                done();
+                setTimeout(() => {
+                  instance.confirmButtonLoading = false;
+                }, 300);
+              }, 3000);
+            } else {
+              done();
+            }
+          }
+        }).then(action => {
+          this.$message({
+            type: 'info',
+            message: 'action: ' + action
+          });
+        });
+    },
     addShoppingCart: function () {
       //发送请求
-      // var FormData = require('form-data');
-      // var data = new FormData();
       var data = {};
-      console.log(data);
       data["goodsId"] = this.commodityId;
-      data["count"] = 3;
-      // data.append('goodsId', this.commodityId);
-      // data.append('count', 3);
-      console.log(data)
-
+      data["count"] = this.shoppingCartCount;
+      console.log(data);
 
       api({
         url: '/commodity/add/shoppingCart',
@@ -395,7 +422,6 @@ export default {
             console.log(error);
             ElMessage.error('加入购物车失败');
           });
-
     },
 
   },
