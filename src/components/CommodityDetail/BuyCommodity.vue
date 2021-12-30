@@ -51,7 +51,7 @@
       <template #footer>
                 <span class="dialog-footer">
                   <el-button @click="dialogFormVisible = false">取 消 购 买</el-button>
-                  <el-button type="primary" @click="buy('buyForm')">确 定 购 买</el-button>
+                  <el-button type="primary" @click="buy()">确 定 购 买</el-button>
                 </span>
       </template>
     </el-dialog>
@@ -62,7 +62,7 @@
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";
 import {api} from "@/request";
-import {CookieManager} from "../../cookie";
+
 
 export default {
   name: "BuyCommodity",
@@ -108,35 +108,15 @@ export default {
         })
       }
     },
-    buy: function (formName) {
-      let user = this.store.getters['user/userInfo']
-      let userId = user.id
+    buy: function () {
 
-      let isValid = true;
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          isValid = true
-        } else {
-          console.log('error submit!!');
-          isValid = false
-          return false;
-        }
-      });
-      if (isValid === false) {
-        return
+      let data = {
+        'goodsId': Number(this.commodityId),
+        'count': this.form.commodityNumber,
+        'totalPrice': (this.price * this.form.commodityNumber).toFixed(2),
+        'location': this.form.locationSelect + this.form.location
       }
-      let token = CookieManager.get("token")
-      let FormData = require('form-data');
-      let data = new FormData();
       console.log(this.form.locationSelect + this.form.location)
-      data.append('buyerId', userId);
-      data.append('sellerId', String(this.sellerId));
-      data.append('commodityId', String(this.commodityId));
-      data.append('count', this.form.commodityNumber);
-      data.append('location', this.form.locationSelect + this.form.location);
-      data.append('token', token);
-      console.log('-------------------------------------------------------')
-      console.log(data.get('token'))
       console.log('-------------------------------------------------------')
 
 
@@ -148,15 +128,7 @@ export default {
       }).then(
           // Valid response
           (response) => {
-            if(String(response.data["Code"]) === '403')
-            {
-              ElMessage.error({
-                message: '登入已过期，请重新登入',
-                type: 'error'
-              })
-            }
-            else {
-              let orderId = JSON.stringify(response.data["OrderId"]);
+              let orderId = response.data["orderId"];
               console.log(orderId)
               this.dialogFormVisible = !this.dialogFormVisible
               this.$router.push({
@@ -166,9 +138,7 @@ export default {
                   orderId: orderId
                 }
               });
-            }
           },
-
           // No response
           (error) => {
             console.log('-------------------------------------------------------')

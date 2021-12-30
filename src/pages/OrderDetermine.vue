@@ -15,12 +15,6 @@
       <el-descriptions-item label="订单时间">{{ orderTime }}</el-descriptions-item>
       <el-descriptions-item label="订单状态">{{ status }}</el-descriptions-item>
       <el-descriptions-item label="交易地点">{{ location }}</el-descriptions-item>
-      <el-descriptions-item label="还物时间" v-if="giveBackTime!=='0001-01-01 00:00:00'">
-        {{ giveBackTime }}
-      </el-descriptions-item>
-      <el-descriptions-item label="还物地点" v-if="giveBackLocation!==null">
-        {{ giveBackLocation }}
-      </el-descriptions-item>
     </el-descriptions>
     <div class="mt-8 flex justify-center">
       <el-button type="info" @click="back()">返 回</el-button>
@@ -34,16 +28,26 @@
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";
-import {CookieManager} from "../cookie";
 
 export default {
   name: "OrderDetermine",
+    data: function () {
+    return {
+      orderId: 18100000000,
+      userName: 'rzcnb',
+      commodityName: '网页自动对齐仪器',
+      commodityNumber: 2,
+      price: 66.66,
+      orderTime: '2020/7/13-12:00:00',
+      status: '未支付',
+      location: '嘉定校区的北苑食堂',
+    }
+  },
   mounted() {
     let user = this.store.getters['user/userInfo']
+    console.log(user.name)
     let userName = user.name
-    if (userName === '') {
-      userName = '未命名的牛逼人'
-    }
+
     console.log('username' + userName)
     let temp = this.$route.params
     this.orderId = temp['orderId']
@@ -61,37 +65,17 @@ export default {
           let data = response.data
           console.log(JSON.stringify(data));
           console.log()
-          console.log('订单状态' + data['Code'])
-          if (data['Code'] === '200') {
-            console.log('进入')
-            let orderInfo = data['order'][0]
-            that.userName = userName
-            console.log('1111111111111111111111111111111111111111')
-            that.commodityName = orderInfo['CommodityName']
-            that.commodityNumber = orderInfo['Count']
-            that.price = orderInfo['CommodityPrice']
-            that.orderTime = orderInfo['Time'].replace('T', ' ').split('.')
-            that.orderTime = that.orderTime[0]
-            that.status = orderInfo['Status']
-            console.log('2222222222222222222222222222222222222222222')
-            that.location = orderInfo["Location"]
-            that.giveBackLocation = orderInfo["ReturnLocation"]
-            let backTime = orderInfo["ReturnTime"]
-            if(backTime !== undefined) {
-              backTime = backTime.replace('T', ' ').split('.')
-              that.giveBackTime = backTime[0]
-            }
-            else
-            {
-              that.giveBackTime = '0001-01-01 00:00:00'
-            }
-            console.log(that.giveBackLocation)
-          } else {
-            ElMessage.error({
-              message: '输入错误了...',
-              type: 'error'
-            })
-          }
+          console.log('进入')
+          let orderInfo = data
+          console.log('1111111111111111111111111111111111111111')
+          that.userName = userName
+          that.commodityName = orderInfo['goodsName']
+          that.commodityNumber = orderInfo['count']
+          that.price = orderInfo['goodsPrice']
+          that.orderTime = orderInfo['orderDate']
+          that.status = orderInfo['status']
+          console.log('2222222222222222222222222222222222222222222')
+          that.location = orderInfo["location"]
         })
         .catch(function (error) {
           console.log(error);
@@ -101,35 +85,15 @@ export default {
           })
         });
   },
-  data: function () {
-    return {
-      orderId: 18100000000,
-      userName: 'rzcnb',
-      commodityName: '网页自动对齐仪器',
-      commodityNumber: 2,
-      price: 66.66,
-      orderTime: '2020/7/13-12:00:00',
-      status: '未支付',
-      location: '嘉定校区的北苑食堂',
-      giveBackLocation: '四平校区的济世楼',
-      giveBackTime: '2020/7/13-12:00:00',
-    }
-  },
   methods: {
     back: function () {
       this.$router.go(-1);
     },
     pay: function () {
-      var FormData = require('form-data');
-      var data = new FormData();
-      let token = CookieManager.get("token")
-      data.append('newStatus', 'PAID');
-      data.append('token', token);
       const that = this
       api({
         url: 'order/' + this.orderId.replaceAll('"', ''),
         method: "put",
-        data : data
       })
           .then(function (response) {
             console.log(JSON.stringify(response.data));
