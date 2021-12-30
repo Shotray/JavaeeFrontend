@@ -111,7 +111,9 @@ export default {
                 message: "删除成功",
                 type: "success",
               })
-              location.reload();
+              this.posts.splice(index, 1)
+              this.$forceUpdate()
+              // location.reload();
             }
             else{
               ElMessage.error({
@@ -139,7 +141,9 @@ export default {
                 message: "删除成功",
                 type: "success",
               })
-              location.reload();
+              this.commodities.splice(index, 1)
+              this.$forceUpdate()
+              // location.reload();
             }
             else{
               ElMessage.error({
