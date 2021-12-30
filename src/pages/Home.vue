@@ -69,7 +69,7 @@ export default {
 
 .slide-window {
   @apply text-center justify-center;
-  width: 80%;
+  width: 70%;
 }
 
 div.search {

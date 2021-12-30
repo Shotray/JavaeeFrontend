@@ -178,6 +178,20 @@ export default {
       });
     },
     checkContact() {
+      api({
+        url: "chat/friend",
+        method: "get",
+      }).then(
+        (res) => {
+          console.log("------------==========");
+          console.log(res);
+          
+        },
+        (error) => {
+          console.log("错误了");
+          console.log(error);
+        }
+      ),
       this.$router.push({
         path: "/chat",
         query: {
@@ -219,25 +233,24 @@ export default {
           console.log("ownerid---" + this.ownerID);
           console.log(this.Images);
           console.log(this.Title);
-          // this.PostComments = data.PostComments
-          // let t = []
-          // data.Comments.forEach(element => {
-          //   let temp={
-          //     userName: element.SenderName,
-          //     userImage: 'https://139.196.20.137:5001/'+element.AvatarPath,
-          //     userId: element.SenderId,
-          //     comment: element.Content,
-          //     rating: -1
-          //   }
-          //   t.push(temp)
-          // });
-          // this.comments = toRaw(t)
-          // this.flag = true
         },
         (error) => {
           console.log(error);
         }
       ),
+      api({
+          method: "GET",
+          url: "/post/comment/" + this.ID,
+        }).then(
+          (response) => {
+            console.log(response);
+            this.PostComments = response.data
+            this.flag = true
+          },
+          (error) => {
+            error
+          }
+        ),
         api({
           method: "GET",
           url: "/me/info",
