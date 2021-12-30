@@ -1,16 +1,15 @@
 <template>
   <div>
-    <el-button type="danger" plain v-show="for_rent==false" @click="dialogFormVisible = true"
+    <el-button type="danger" plain v-show="for_rent==false" @click="showSelf"
                :disabled="stock===0">
       {{ stock === 0 ? '商品已售罄' : '立即购买' }}
     </el-button>
 
     <el-dialog title="购买信息" v-model="dialogFormVisible">
-      <el-form :model="form" :inline="true" :disabled="false">
+      <el-form :model="form" :disabled="false" :label-position="left">
         <el-form-item label="&nbsp;&nbsp;&nbsp;购买者:">
           <el-input v-model="buyer" placeholder="软院之光" :disabled="true"></el-input>
         </el-form-item>
-        &nbsp;&nbsp;&nbsp;
         <el-form-item label="购买商品:">
           <el-input v-model="commodityName" placeholder="自动编程机" :disabled="true"></el-input>
         </el-form-item>
@@ -74,7 +73,8 @@ export default {
     commodityId: String,
     price: Number,
     for_rent: Boolean,
-    stock: Number
+    stock: Number,
+    buyNum: Number
   },
   data: function () {
     return {
@@ -95,6 +95,19 @@ export default {
     }
   },
   methods: {
+
+    showSelf: function(){
+      if (this.buyNum <= this.stock){
+        this.form.commodityNumber = this.buyNum
+        this.dialogFormVisible = true
+      }
+      else{
+        ElMessage.error({
+          message: '购买数量超过库存',
+          type: 'error'
+        })
+      }
+    },
     buy: function (formName) {
       let user = this.store.getters['user/userInfo']
       let userId = user.id

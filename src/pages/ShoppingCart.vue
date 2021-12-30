@@ -19,7 +19,7 @@
         <!-- </el-table-column> -->
         <el-table-column
             prop="image"
-            label="商品图片" width="275" align="center">
+            label="商品图片" width="200" align="center">
 
           <template #default="scope">
           <span style="margin-left: 10px" class="text-xl font-semibold ">
@@ -60,17 +60,31 @@
             label="操作"
             class="col-span-3" align="center">
           <template #default="scope">
+            <div class="flex justify-around">
             <el-button
                 @click.prevent="deleteRow(scope.$index, tableData)"
-                type="primary" class="mr-8">
+                type="danger" plain class="mr-8">
               移除
             </el-button>
 
-            <el-button type="primary" class="ml-8"
+            <div class="mr-8 ml-8">
+              <buy-commodity
+                :buyer="userName"
+                :commodity-name="scope.row.commodity"
+                :price="scope.row.price"
+                :for_rent=false
+                :commodity-id="String(scope.row.id)"
+                :seller-id="String(scope.row.ownerId)"
+                :stock="scope.row.stock"
+                :buyNum="scope.row.count"
+              ></buy-commodity>
+            </div>
+
+            <!-- <el-button type="primary" class="ml-8"
                        @click.prevent="buyCommodity(scope.$index, tableData)">
               结算
-            </el-button>
-
+            </el-button> -->
+            </div>
 
           </template>
         </el-table-column>
@@ -87,9 +101,12 @@
 import {useStore} from "vuex";
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
-
+import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
 export default {
   name: "ShoppingCart",
+  components: {
+    BuyCommodity,
+  },
   props: {
     title: String,
     img: String,
@@ -102,6 +119,9 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      let user = this.store.getters["user/userInfo"];
+      this.userId = user.id;
+      this.userName = user.name;
       const that = this
       api({
         url: "shoppingCart",
@@ -117,6 +137,8 @@ export default {
               temp['commodity'] = response.data[i]['goodsName']
               temp['id'] = response.data[i]['goodsId']
               temp['image'] = response.data[i]['image']
+              temp['ownerId'] = response.data[i]['userId']
+              temp['stock'] = response.data[i]['sellNum']
               that.tableData.push(temp)
             }
           })

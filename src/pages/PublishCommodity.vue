@@ -1,6 +1,6 @@
 <template>
   <div class="content-center m-auto commodity-form bg-repeat" style="width: 100%">
-    <div class="w-full m-auto content-center text-center">
+    <div class="m-auto content-center text-center">
       <div class="rounded-lg bg-blur">
         <CommodityForm></CommodityForm>
       </div>
@@ -21,8 +21,8 @@ export default {
 
 .commodity-form {
   height: 120%;
-  /* background-image: linear-gradient(#5698c3, #d1c2d3); */
-  /* background-image: linear-gradient(#3a353f, #505668); */
+  /* background-image: linear-gradient(#5698c3, #d1c2d3);
+  background-image: linear-gradient(#3a353f, #505668); */
   @apply p-10;
 }
 
