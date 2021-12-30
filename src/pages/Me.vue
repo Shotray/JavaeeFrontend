@@ -139,8 +139,7 @@ export default {
           formData.append("files",this.file[i]);
           console.log(this.file[i]);
         }
-      // this.file = file;
-      // formData.append("Avatar", this.file);
+
       api({
         // 需要商量url
         method: "put",

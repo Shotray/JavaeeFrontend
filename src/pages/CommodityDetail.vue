@@ -133,7 +133,7 @@
           <el-input-number
             v-model="shoppingCartCount"
             :min="1"
-            :max="20"
+            :max="stock"
           ></el-input-number>
 
           <div class="flex justify-around mt-8">
@@ -158,6 +158,7 @@
                 :commodity-id="String(commodityId)"
                 :seller-id="String(ownerId)"
                 :stock="stock"
+                :buyNum="shoppingCartCount"
               ></buy-commodity>
             </div>
 
@@ -295,6 +296,7 @@ export default {
         this.description = response.data["description"];
         this.category = response.data["category"];
         this.price = response.data["price"];
+        this.stock = response.data["stock"];
         for (let i = 0; i < response.data["goodsImage"].length; i++) {
           this.images.push(response.data["goodsImage"][i]);
         }

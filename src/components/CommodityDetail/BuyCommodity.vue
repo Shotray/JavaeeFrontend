@@ -138,8 +138,7 @@ export default {
       console.log('-------------------------------------------------------')
       console.log(data.get('token'))
       console.log('-------------------------------------------------------')
-      //data.append('returnTime', null);
-      //data.append('returnLocation', null);
+
 
 
       api({
