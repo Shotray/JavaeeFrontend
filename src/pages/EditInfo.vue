@@ -144,25 +144,25 @@ export default {
         this.ruleForm.userName &&
         this.ruleForm.userPhone
       ) {
-        console.log("==============")
-        console.log(this.ruleForm);
-        let formData = new FormData();
-        let data=this.ruleForm;
-        console.log(data);
-        formData.append("info", new Blob([JSON.stringify(data)], {type: "application/json"}));
-        for(let i = 0;i < this.file.length;i++) {
-          formData.append("image",this.file[i]);
-          console.log("图片上传"+i);
-          console.log(this.file[i]);
+
+        this.$refs.upload.submit();
+        let data={
+          "userNickname":this.ruleForm.userNickname,
+          "userName":this.ruleForm.userName,
+          "userPhone":this.ruleForm.userPhone,
+          "userSex":this.ruleForm.userSex
         }
-        console.log("这是formdata");
-        console.log(formData);
-        // data.append("info", this.ruleForm);
-        // data.append("image", this.ruleForm.personal);
-        api({
-          url: "me/info",
-          method: "post",
-          data: formData,
+        if (this.file.length > 0) {
+          let formData = new FormData();
+          formData.append("image", this.file[0]);
+          api({
+            url: "me/image",
+            method: "POST",
+            data: formData,
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+
         }).then((response) => {
           console.log("==========touxiang========")
           console.log(response);
@@ -178,7 +178,45 @@ export default {
               type: "error",
             });
           }
-        });
+        },
+        (error) => {
+          console.log(formData)
+          console.log(error)
+        })
+        }
+        // console.log(formData.get("info"))
+        // if (this.file.length == 0) {
+        //   formData.append("image", "no image");
+        // }
+        // for(let i = 0;i < this.file.length;i++) {
+        //   formData.append("image",this.file[i]);
+        //   console.log(this.file[i]);
+        // }
+
+        api({
+          url: "me/edit",
+          method: "POST",
+          data: data,
+        }).then((response) => {
+          console.log("==========touxiang========")
+          console.log(response);
+
+          if (response.status === 200) {
+            ElMessage.success({
+              message: "修改成功",
+              type: "success",
+            });
+          } else {
+            ElMessage.error({
+              message: "修改失败",
+              type: "error",
+            });
+          }
+        },
+        (error) => {
+
+          console.log(error)
+        })
       }
     },
     resetForm() {

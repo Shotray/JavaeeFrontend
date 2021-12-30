@@ -145,6 +145,7 @@ export default {
       myUserID:"",
       otherID:"",
       otherName:"",
+      otherAvatar:"",
 
     };
   },
@@ -175,14 +176,15 @@ export default {
           this.otherID=res.data[0].userId;
           // console.log(this.otherID);
           this.otherName=res.data[0].userName;
-          console.log(this.otherName);
+          // console.log(this.otherName);
+          this.otherAvatar=res.data[0].userImage;
 
           this.$router.push({
           path: "/chat",
           query: {
           ID: this.otherID,
           SenderName: this.otherName,
-          AvatarPath: this.AvatarPath,
+          AvatarPath: this.otherAvatar,
         },
       });
         },
