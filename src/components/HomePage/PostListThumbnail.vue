@@ -11,7 +11,7 @@
              class="pt-2 text-gray-600"
         >
           <span class="hover:text-blue-500"><router-link :to="'/postDetail/' + p.postId">{{p.postTitle.replace(/^\s*|\s*$/g,"").substr(0,9) + (p.postTitle.replace(/^\s*|\s*$/g,"").length > 9 ? "..." : "")}} </router-link></span>
-          <span class="float-right hover:text-blue-500"><router-link :to="'/user/' + p.userId">{{"@" + p.userNickname}}</router-link></span>
+          <span class="float-right hover:text-blue-500">{{"@" + p.userNickname}}</span>
         </div>
       </div>
     </div>
