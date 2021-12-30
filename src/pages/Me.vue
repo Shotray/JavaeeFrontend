@@ -227,6 +227,7 @@ export default {
       this.$router.push("/postDetail/" + this.posts[index].postId);
     },
     viewCommodityDetail(index) {
+      console.log(this.commodities[index]);
       this.$router.push("/commodityDetail/" + this.commodities[index].Id);
     },
     deletePost(index) {

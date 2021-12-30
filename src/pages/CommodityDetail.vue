@@ -225,7 +225,7 @@ export default {
       name: "自动编程机",
       former_price: 100,
       price: 66.66,
-      likes: 1,
+      likes: 0,
       description:
         "  " +
         "自动编程机，只要点击就可以通过你的意念进行编程。如果你不会编程也没事，你可以通过" +
