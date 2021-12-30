@@ -113,11 +113,13 @@ export default {
       let data = {
         'goodsId': Number(this.commodityId),
         'count': this.form.commodityNumber,
-        'price': (this.price * this.form.commodityNumber).toFixed(2),
+        'totalPrice': (this.price * this.form.commodityNumber).toFixed(2),
         'location': this.form.locationSelect + this.form.location
       }
       console.log(this.form.locationSelect + this.form.location)
       console.log('-------------------------------------------------------')
+
+
 
       api({
         url: "order",
@@ -126,7 +128,7 @@ export default {
       }).then(
           // Valid response
           (response) => {
-              let orderId = JSON.stringify(response.data["OrderId"]);
+              let orderId = response.data["orderId"];
               console.log(orderId)
               this.dialogFormVisible = !this.dialogFormVisible
               this.$router.push({
