@@ -178,6 +178,20 @@ export default {
       });
     },
     checkContact() {
+      api({
+        url: "chat/friend",
+        method: "get",
+      }).then(
+        (res) => {
+          console.log("------------==========");
+          console.log(res);
+          
+        },
+        (error) => {
+          console.log("错误了");
+          console.log(error);
+        }
+      ),
       this.$router.push({
         path: "/chat",
         query: {

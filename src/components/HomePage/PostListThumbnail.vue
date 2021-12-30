@@ -47,7 +47,7 @@ export default {
 <style scoped>
 .post-list {
   position: relative;
-  width: 20%;
+  width: 30%;
   height: 100%;
   min-height: 100%;
   background: rgba(255,255,255,0.6);
