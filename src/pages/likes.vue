@@ -81,7 +81,8 @@
     #fff
   ); /* Firefox 3.6 - 15 */
   /* background-color: #93b5cf; */
-  background-image: linear-gradient(#3a353f, #505668);
+  /* background-image: linear-gradient(#3a353f, #505668); */
+  background-image: linear-gradient(#5698c3, #d1c2d3);
   color: #e6e6e6;
   font-family: "Helvetica Neue", sans-serif;
 }

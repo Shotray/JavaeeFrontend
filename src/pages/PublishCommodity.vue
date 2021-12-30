@@ -33,8 +33,10 @@ export default {
   background: rgba(255, 255, 255, 0.4);
   margin: auto;
 }
+
 .bg-repeat {
-  background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg');
+  background-image: linear-gradient(#5698c3, #d1c2d3);
+  /* background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg'); */
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;

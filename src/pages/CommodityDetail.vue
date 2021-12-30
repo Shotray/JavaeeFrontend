@@ -450,7 +450,8 @@ export default {
     #000,
     #fff
   ); /* Firefox 3.6 - 15 */
-  background-color: #93b5cf;
+  /* background-color: #93b5cf; */
+  background-image: linear-gradient(#5698c3, #d1c2d3);
 }
 
 .carousel-image {

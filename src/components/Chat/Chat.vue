@@ -20,9 +20,10 @@
                     <input type="text" placeholder="search" />
                     <i class="fa fa-search"></i>
                 </div>
-                <ul class="list">
-
-                </ul>
+                <div class="people">
+                    <img class="chatImg" :src="otherAvatar" alt="avatar" />
+                        <div class="people-name">{{otherName}}</div>
+                </div>
             </div>
 
             <div class="dialog">
@@ -184,7 +185,9 @@ export default {
   },
   mounted() {
       this.$refs.chatMain.scrollTop = this.$refs.chatMain.scrollHeight;
-
+        window.onresize = () => {
+        this.$refs.chatMain.scrollTop = this.$refs.chatMain.scrollHeight;
+        }
       this.otherAvatar=this.$route.query.AvatarPath;
       this.otherID=this.$route.query.ID;
       this.otherName=this.$route.query.SenderName;
@@ -219,6 +222,7 @@ export default {
             this.messageList[10].messageFromUserId="25";
             console.log(this.messageList)
           }
+        
           });
       //进入页面开始初始化websocket建立连接      
     // api({
@@ -345,6 +349,18 @@ body {
     cursor: pointer;
     background-color: #4f6ebd;
     color: #cfe5ff;
+}
+
+.people {
+    background-color: #76c3ce;
+    height: 50px;
+}
+
+.people-name {
+    text-align: right;
+    justify-content: center;
+    line-height: 50px;
+    margin-right: 30px;
 }
 
 .people-list {
@@ -766,7 +782,7 @@ body {
 }
 
 .bg-repeat {
-  background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg');
+  background-image: url('https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;

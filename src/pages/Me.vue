@@ -69,7 +69,7 @@
               <span><i class="el-icon-s-goods"></i>订单管理</span>
             </template>
             <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane name="second">
+              <!-- <el-tab-pane name="second">
                 <template #label>
                   <span><i class="el-icon-document"></i>进行中</span>
                 </template>
@@ -78,10 +78,10 @@
                 >
 
                 </MyOrders>
-              </el-tab-pane>
+              </el-tab-pane> -->
               <el-tab-pane name="first">
                 <template #label>
-                  <span><i class="el-icon-document-checked"></i>已完成</span>
+                  <span><i class="el-icon-document-checked"></i>我的订单</span>
                 </template>
                 <MyOrders
                     :type="'PAID'"
@@ -275,7 +275,7 @@ export default {
 }
 
 .bg-repeat {
-  background-image: url('https://cdn.pixabay.com/photo/2014/12/15/15/36/cloth-569222_1280.jpg');
+  background-image: url('https://img.tukuppt.com/bg_grid/00/12/50/WRuekkPYAY.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
