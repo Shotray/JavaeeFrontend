@@ -150,22 +150,6 @@ export default {
       this.canLoad = tab["props"]["label"] !== "商品描述";
     },
 
-    // sendContact() {
-    //   let formData = new FormData()
-    //   formData.append("senderId", this.simpleUserId)
-    //   formData.append('receiverId', this.SenderId)
-    //   formData.append("content", "Hi, 我看了你的帖子《" + this.Title + '》')
-
-    //   api({
-    //     method: "post",
-    //     url: 'chat',
-    //     data: formData
-    //   }).then( response => {
-    //     if (response.data.Code === '200') {
-    //       this.$router.push("/notification")
-    //     }
-    //   })
-    // },
     sendContact() {
       // this.$router.push("/chat")
       this.$router.push({
