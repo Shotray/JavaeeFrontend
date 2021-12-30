@@ -6,7 +6,13 @@
           <h2 class="page-section-title">{{ item.favoritesName }}</h2>
         </el-col>
         <el-col :span="1">
-          <el-button  type="info" icon="el-icon-delete" circle> </el-button>
+          <el-button
+            type="info"
+            icon="el-icon-delete"
+            circle
+            @click="deleteFavorites(item)"
+          >
+          </el-button>
         </el-col>
       </el-row>
       <el-row>
@@ -26,7 +32,28 @@
       </el-row>
     </div>
     <el-row class="row">
-      <el-button type="primary" @click="clickAddButton">+</el-button>
+      <el-col offset="12">
+        <el-button type="primary" plain @click="isVisible = true">+</el-button>
+        <el-dialog v-model="isVisible">
+          <el-form
+            :model="ruleForm"
+            status-icon
+            :rules="rules"
+            label-width="120px"
+          >
+            <el-form-item label="收藏夹名称" prop="favoritesName">
+              <el-input v-model.number="favoritesName"></el-input>
+            </el-form-item>
+          </el-form>
+
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="isVisible = false">取 消</el-button>
+              <el-button type="primary" @click="clickAddButton">确 定</el-button>
+            </span>
+          </template>
+        </el-dialog>
+      </el-col>
     </el-row>
   </el-main>
 </template>
@@ -83,12 +110,12 @@
 }
 
 .el-button {
-  height: 50px;
-  width: 50px;
-  top:40px;
+  /* height: 50px;
+  width: 50px; */
+  top: 40px;
 }
 
-.row{
+.row {
   text-align: center;
 }
 </style>
@@ -108,119 +135,92 @@ export default {
   },
   data() {
     return {
-      tableData: [
-        {
-          favoritesName: "Hello",
-          goods: [
-            {
-              picture:
-                "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-              name: "test",
-              price: 100,
-              offset: 0,
-            },
-            { 
-              picture:
-                "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-              name: "test",
-              price: 100,
-              offset: 1,
-            },
-            {
-              picture:
-                "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-              name: "test",
-              price: 100,
-              offset: 1,
-            },
-          ],
-        },
-        {
-          favoritesName: "Hello1",
-          goods: [
-            {
-              picture:
-                "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-              name: "test",
-              price: 100,
-              offset: 0,
-            },
-          ],
-        },
-        {
-          favoritesName: "Hello2",
-          goods: [
-            {
-              picture:
-                "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
-              name: "test",
-              price: 100,
-              offset: 0,
-            },
-          ],
-        },
-      ],
+      tableData: [],
+      isVisible: false,
+      favoritesName:""
     };
   },
   mounted() {
-   
+    api({
+      url: "/favorites/getFavorites/goods",
+      method: "get",
+    })
+      .then((response) => {
+        console.log(response);
+        this.tableData = response.data["favoritesGoods"];
+        console.log(response.data["favoritesName"]);
+        console.log(this.tableData);
+      })
+      .catch((error) => {
+        console.log(error);
+        ElMessage.error({
+          message: "服务器在开小差...",
+          type: "error",
+        });
+      });
   },
   methods: {
-    clickAddButton(){
-      var data = {"favoritesName":"test"}
-      api({
-        url: "favorites/createFavorites",
-        method: "post",
-        data: data,
-      })
-        .then(function (response) {
-          console.log(JSON.stringify(response.data))
-        })
-        .catch(function (error) {
-          console.log(error);
-          ElMessage.error({
-            message: "服务器在开小差...",
-            type: "error",
-          });
+    clickAddButton() {
+      if(this.favoritesName == "") {
+        ElMessage.error({
+          message: "收藏夹名不能为空！",
+          type: "error",
         });
-    },
-    deleteRow(index, rows) {
-      let commodityId = rows[index]["id"];
-      let user = this.store.getters["user/userInfo"];
-      let userId = user.id;
-
-      var FormData = require("form-data");
-      var data = new FormData();
-      data.append("userId", userId);
-      data.append("commodityId", commodityId);
-      console.log(data.get("userId"));
-      console.log(data.get("commodityId"));
+        return;
+      }
+      this.isVisible = false;
+      var data = {};
+      data["favoritesName"] = this.favoritesName;
       api({
-        url: "Likes",
-        method: "post",
-        data: data,
+      url: "/favorites/createFavorites",
+      method: "post",
+      data:data
+    })
+      .then((response) => {
+        console.log(response);
+        var temp = {};
+        temp["favoritesId"] = response.data["favoritesId"];
+        temp["favoritesName"] = response.data["favoritesName"];
+        temp["goods"] = []
+        this.tableData.push(temp);
+        this.$forceUpdate();
+            ElMessage.success({
+            message: "添加收藏夹成功",
+            type: "success",
+          });
+        this.favoritesName = "";
       })
-        .then(function (response) {
-          console.log(JSON.stringify(response.data));
-          rows.splice(index, 1);
+      .catch((error) => {
+        console.log(error);
+        ElMessage.error({
+          message: "服务器在开小差...",
+          type: "error",
+        });
+      });
+    },
+    deleteFavorites(item) {
+      console.log(item);
+      api({
+        url: "/favorites/deleteFavorites/" + item["favoritesId"],
+        method: "delete",
+      })
+        .then((response) => {
+          console.log(response.data);
+          this.tableData.splice(this.tableData.indexOf(item), 1);
+          console.log(this.tableData);
+          this.$forceUpdate();
           ElMessage.success({
-            message: "取消收藏成功",
+            message: "删除收藏夹成功",
             type: "success",
           });
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
           ElMessage.error({
             message: "服务器在开小差...",
             type: "error",
           });
         });
-    },
-    buyCommodity(index, rows) {
-      console.log(rows[index]);
-      this.$router.push({
-        path: "/CommodityDetail/" + rows[index]["id"],
-      });
     },
     getSummaries(param) {
       const { columns, data } = param;
