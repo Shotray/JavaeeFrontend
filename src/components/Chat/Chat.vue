@@ -121,7 +121,7 @@ export default {
             messageContent: this.content + "",
             messageToUserId: this.otherID + "",
             messageType: 0,
-            messageDate: new Date()
+            messageDate: new Date(Date.parse(new Date())+3600*8*1000)
         };
         api({
             method: "post",
@@ -174,7 +174,7 @@ export default {
             console.log(e["data"])
             var tempJson=JSON.parse(e["data"]);
             console.log(tempJson);
-            var myDate = new Date(tempJson.messageDate);
+            var myDate = new Date(tempJson.messageDate+8*3600*1000);
             console.log(myDate)
             var tempHM = myDate.toISOString().substring(11,19);
             tempJson.messageDate=myDate.toISOString().substring(0,10)+ " "+tempHM;
@@ -195,10 +195,10 @@ export default {
 		},  
   },
   mounted() {
-      this.$refs.chatMain.scrollTop = this.$refs.chatMain.scrollHeight;
-        window.onresize = () => {
-        this.$refs.chatMain.scrollTop = this.$refs.chatMain.scrollHeight;
-        }
+    //   this.$refs.chatMain.scrollTop = this.$refs.chatMain.scrollHeight;
+    //     window.onresize = () => {
+    //     this.$refs.chatMain.scrollTop = this.$refs.chatMain.scrollHeight;
+    //     }
       this.otherAvatar=this.$route.query.AvatarPath;
       this.otherID=this.$route.query.ID;
       this.otherName=this.$route.query.SenderName;
@@ -229,11 +229,8 @@ export default {
                 res.data[i].messageDate=res.data[i].messageDate.substring(0,10)+ ' '+ tempHM;
                 this.messageList.push(res.data[i]);
             }
-            this.messageList[0].messageFromUserId="25";
-            this.messageList[10].messageFromUserId="25";
             console.log(this.messageList)
-          }
-        
+          } 
           });
       //进入页面开始初始化websocket建立连接      
     // api({
@@ -368,10 +365,10 @@ body {
 }
 
 .people-name {
-    text-align: right;
+    text-align: center;
     justify-content: center;
     line-height: 50px;
-    margin-right: 30px;
+    /* margin-right: 50px; */
 }
 
 .people-list {

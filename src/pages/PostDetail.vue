@@ -181,8 +181,8 @@ export default {
       this.$router.push({
         path: "/chat",
         query: {
-          ID: 23,
-          SenderName: "suibiantest",
+          ID: 22,
+          SenderName: "无事闲逛",
           AvatarPath: this.AvatarPath,
         },
       });
