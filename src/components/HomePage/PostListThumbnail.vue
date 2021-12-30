@@ -10,8 +10,8 @@
              :key="p.postId"
              class="pt-2 text-gray-600"
         >
-          <span class="hover:text-blue-500"><router-link :to="'/postDetail/' + p.postId">{{p.postTitle.replace(/^\s*|\s*$/g,"").substr(0,9) + (p.postTitle.replace(/^\s*|\s*$/g,"").length > 9 ? "..." : "")}} </router-link></span>
-          <span class="float-right hover:text-blue-500">{{"@" + p.userNickname}}</span>
+          <span class="hover:text-blue-500"><router-link :to="'/postDetail/' + p.postId">{{p.postTitle.replace(/^\s*|\s*$/g,"").substr(0,5) + (p.postTitle.replace(/^\s*|\s*$/g,"").length > 5 ? "..." : "")}} </router-link></span>
+          <span class="float-right hover:text-blue-500">{{"@" + p.userNickname.substr(0,5)}}</span>
         </div>
       </div>
     </div>

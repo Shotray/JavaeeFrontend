@@ -137,19 +137,7 @@
           ></el-input-number>
 
           <div class="flex justify-around mt-8">
-            <div class="mr-8 ml-8" v-if="for_rent == true">
-              <rent-commodity
-                :buyer="userName"
-                :commodity-name="name"
-                :price="price"
-                :for_rent="for_rent"
-                :commodity-id="String(commodityId)"
-                :seller-id="String(ownerId)"
-                :stock="stock"
-              ></rent-commodity>
-            </div>
-
-            <div class="mr-8 ml-8" v-else>
+            <div class="mr-8 ml-8">
               <buy-commodity
                 :buyer="userName"
                 :commodity-name="name"
@@ -213,7 +201,7 @@
 import { ElMessage } from "element-plus";
 import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
 // import report from "@/components/Public/Report";
-import RentCommodity from "@/components/CommodityDetail/RentCommodity";
+// import RentCommodity from "@/components/CommodityDetail/RentCommodity";
 import UserAndAvatar from "@/components/Public/UserAndAvatar";
 // import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import { api } from "@/request";
@@ -224,19 +212,20 @@ export default {
   components: {
     // report,
     BuyCommodity,
-    RentCommodity,
     UserAndAvatar,
     // CommodityCommentList,
   },
   data: function () {
     return {
       commodityId: "1",
+      userId: "1",
+      userName: "1",
       ownerName: "rzc",
       ownerAvatar: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png",
       name: "自动编程机",
       former_price: 100,
       price: 66.66,
-      likes: 1,
+      likes: 0,
       description:
         "  " +
         "自动编程机，只要点击就可以通过你的意念进行编程。如果你不会编程也没事，你可以通过" +
@@ -269,6 +258,9 @@ export default {
       let user = this.store.getters["user/userInfo"];
       this.userId = user.id;
       this.userName = user.name;
+      console.log('+++++++++++++')
+      console.log(user)
+      console.log(this.userName)
       console.log(this.$route.fullPath);
       let temp = this.$route.fullPath.split("/");
       temp = temp[temp.length - 1];
