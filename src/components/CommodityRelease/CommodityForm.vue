@@ -133,7 +133,7 @@ export default {
         price: [{ required: true, message: "请输入价格", trigger: "blur" }],
         desc: [{ required: true, message: "请填写商品简介", trigger: "blur" }],
         images: [
-          { required: true, message: "至少上传一张商品图片", trigger: "blur" },
+          { required: false, message: "至少上传一张商品图片", trigger: "blur" },
         ],
         unit: [{ required: true, message: "请填写单位", trigger: "blur" }],
         stock: [{ required: true, message: "请填写库存", trigger: "blur" }],
