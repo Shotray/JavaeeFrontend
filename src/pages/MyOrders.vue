@@ -13,7 +13,7 @@
         <template #default="scope">        
           <el-image
               style="width: 100px; height: 100px"
-              :src="'https://139.196.20.137:5001/'+orderList[scope.$index].picture"
+              :src="orderList[scope.$index].picture" 
           >
           </el-image>
         </template>
@@ -21,28 +21,24 @@
       <el-table-column
           prop="name"
           label="商品名称"
-          width="160"
           align="center">
       </el-table-column>
       <el-table-column
           prop="price"
           label="商品价格"
-          width="80"
           align="center">
       </el-table-column>
       <el-table-column
           prop="count"
           label="数量"
-          width="60"
           align="center">
       </el-table-column>
       <el-table-column
           prop="totalPrice"
           label="总价格"
-          width="100"
           align="center">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
           fixed="right"
           label="操作"
           width="360"
@@ -55,7 +51,7 @@
             查看订单
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
   </div>
 </template>
@@ -103,21 +99,16 @@ export default {
         url: "/me/order"
       })
       .then( (response) => {
-        console.log("这是MyOrder的输出");
-        var orders = response.data.OrderList;
-        console.log(orders);
+        var orders = response.data;
         this.orderList = [];
         for(let i=0;i<orders.length;++i){
-          if(orders[i].Status !== this.type){
-            continue;
-          }
           var order = {};
-          order.picture = orders[i].Cover;
-          order.name = orders[i].CommodityName;
-          order.price = orders[i].Price;
-          order.count = orders[i].Count;
-          order['totalPrice'] = order.price * order.count;
-          order.Id = orders[i].Id;
+          order["picture"] = orders[i]["goodsImage"];
+          order["name"] = orders[i]["goodsName"];
+          order["price"] = orders[i]["goodsPrice"];
+          order["count"] = orders[i]["count"];
+          order['totalPrice'] = orders[i]["totalPrice"];
+          order['goodsId'] = orders[i]["goodsId"];
           this.orderList.push(order);
         }
         console.log(this.orderList);
