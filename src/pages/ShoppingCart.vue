@@ -128,7 +128,6 @@ export default {
         method: "get",
       })
           .then(function (response) {
-            console.log(JSON.stringify(response.data[0]['image']));
             that.tableData = []
             for (let i = 0; i < response.data.length; i++) {
               let temp = {}
