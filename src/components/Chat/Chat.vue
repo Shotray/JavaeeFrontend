@@ -171,13 +171,23 @@ export default {
 		},              
 		websocketonmessage(e) {                
 			console.log(e);               // console.log(e);
-            // console.log(e["data"])
-            // console.log(JSON.stringify(e["data"]))
+            console.log(e["data"])
+            var tempJson=JSON.parse(e["data"]);
+            console.log(tempJson);
+            var myDate = new Date(tempJson.messageDate);
+            console.log(myDate)
+            var tempHM = myDate.toISOString().substring(11,19);
+            tempJson.messageDate=myDate.toISOString().substring(0,10)+ " "+tempHM;
+            console.log(tempJson);
+            console.log("=========================")
+            // console.log(e["data"].messageContent)
+            // console.log(JSON.stringify(e["data"]).indexOf("messageDate"))
             // console.log(e.data["messageContent"]);
-            // var tempHM = e.data.stringify.substring(11,19);
+            // var tempHM = JSON.stringify(e["data"]).substring(22,JSON.stringify(e["data"]).indexOf("messageDate")-3);
             // msg.messageDate=msg.messageDate.toISOString().substring(0,10)+ " "+tempHM;
             // this.messageList.push(msg);
-            this.messageList.push("我是接受的一方");
+            this.messageList.push(tempJson);
+            // console.log(tempHM)
             console.log("-----------dasdsada-------------成功收到了吗")            
 		},              
 		websocketclose(e) {                
