@@ -143,6 +143,9 @@ export default {
       flag: true,
       simpleUserId: "",
       myUserID:"",
+      otherID:"",
+      otherName:"",
+
     };
   },
   methods: {
@@ -167,23 +170,28 @@ export default {
         method: "get",
       }).then(
         (res) => {
-          console.log("------------==========");
-          console.log(res);
-          
+          // console.log("------------==========");
+          // console.log(res);
+          this.otherID=res.data[0].userId;
+          // console.log(this.otherID);
+          this.otherName=res.data[0].userName;
+          console.log(this.otherName);
+
+          this.$router.push({
+          path: "/chat",
+          query: {
+          ID: this.otherID,
+          SenderName: this.otherName,
+          AvatarPath: this.AvatarPath,
+        },
+      });
         },
         (error) => {
           console.log("错误了");
           console.log(error);
         }
-      ),
-      this.$router.push({
-        path: "/chat",
-        query: {
-          ID: 22,
-          SenderName: "无事闲逛",
-          AvatarPath: this.AvatarPath,
-        },
-      });
+      )
+      
     },
     getData() {
       // let simpleUser = this.store.getters['user/userInfo']
