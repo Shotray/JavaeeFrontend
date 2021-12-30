@@ -171,13 +171,14 @@ export default {
 		},              
 		websocketonmessage(e) {                
 			console.log(e);               // console.log(e);
-            console.log(e["data"])
-            console.log(JSON.stringify(e["data"]))
+            // console.log(e["data"])
+            // console.log(JSON.stringify(e["data"]))
             // console.log(e.data["messageContent"]);
             // var tempHM = e.data.stringify.substring(11,19);
             // msg.messageDate=msg.messageDate.toISOString().substring(0,10)+ " "+tempHM;
             // this.messageList.push(msg);
-            console.log("-----------dasdsada")            
+            this.messageList.push("我是接受的一方");
+            console.log("-----------dasdsada-------------成功收到了吗")            
 		},              
 		websocketclose(e) {                
 			console.log("connection closed (" + e.code + ")");              
