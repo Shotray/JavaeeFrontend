@@ -151,7 +151,7 @@ export default {
 	},
     initWebSocket() {                
 			// WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
-            let url = "ws://localhost:8081/websocket/"+this.meID;
+            let url = "ws://81.69.225.235:8081/websocket/"+this.meID;
             // console.log(url)
             // console.log(this.meID);
 			this.websocket = new WebSocket(url); //这里是websocket服务地址，这里的地址可以前端根据后台地址参数规则拼成，也可以向后端请求         
